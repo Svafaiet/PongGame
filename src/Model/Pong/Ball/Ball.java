@@ -2,16 +2,25 @@ package Model.Pong.Ball;
 
 import Model.Pong.BoardProperties;
 import Model.Pong.GoalKeeper.GoalKeeper;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import Model.Pong.Location;
 
 import java.io.Serializable;
+import java.util.Random;
+
+import static java.lang.Math.*;
 
 public class Ball implements Serializable {
-    public static final int INITIAL_HORIZONTAL_SPEED = 10;
-    public static final int INITIAL_VERTICAL_SPEED = 0;
+    public final double INITIAL_HORIZONTAL_DIR;
+    public final double INITIAL_VERTICAL_DIR;
+    public final double INITIAL_SPEED_SIZE = 3;
+    {
+        double randomAngle = random()%(PI) - PI/2;
+        INITIAL_HORIZONTAL_DIR = sin(randomAngle);
+        INITIAL_VERTICAL_DIR = cos(randomAngle);
+    }
+
     public static final int DEFAULT_BALL_RADIUS = 7;
-    public static final double SPEED_ADD_RATE = 1;
+    public static final double SPEED_ADD_RATE = 0.005;
 
     public Ball(BoardProperties boardProperties) {
         ballCircle = new BallCircle();
@@ -19,7 +28,7 @@ public class Ball implements Serializable {
         ballCircle.setCenterY(boardProperties.getHeight() / 2);
         ballCircle.setRadius(DEFAULT_BALL_RADIUS);
 
-        speed = new Speed(INITIAL_HORIZONTAL_SPEED, INITIAL_VERTICAL_SPEED);
+        speed = new Speed(INITIAL_HORIZONTAL_DIR, INITIAL_VERTICAL_DIR, INITIAL_SPEED_SIZE);
 
         ballType = BallType.CLASSIC;
 
@@ -27,11 +36,11 @@ public class Ball implements Serializable {
 
     public Ball(BoardProperties boardProperties, BallType ballType) {
         ballCircle = new BallCircle();
-        ballCircle.setCenterX(boardProperties.getWidth() / 1);
+        ballCircle.setCenterX(boardProperties.getWidth() / 2);
         ballCircle.setCenterY(boardProperties.getHeight() / 2);
         ballCircle.setRadius(DEFAULT_BALL_RADIUS);
 
-        speed = new Speed(INITIAL_HORIZONTAL_SPEED, INITIAL_VERTICAL_SPEED);
+        speed = new Speed(INITIAL_HORIZONTAL_DIR, INITIAL_VERTICAL_DIR, INITIAL_SPEED_SIZE);
 
         this.ballType = ballType;
     }
@@ -50,7 +59,7 @@ public class Ball implements Serializable {
     }
 
     public double getDistanceFromCenter(BoardProperties boardProperties) {
-        return Math.abs((boardProperties.getWidth() / 2) - ballCircle.getCenterX());
+        return abs((boardProperties.getWidth() / 2) - ballCircle.getCenterX());
 
     }
 
@@ -68,7 +77,7 @@ public class Ball implements Serializable {
     }
 
     public void changeSpeed(Speed otherThingSpeed) {
-        speed.add(new Speed(otherThingSpeed.getHorizontalSpeed() / 3, otherThingSpeed.getVerticalSpeed() / 3));
+        speed.add(new Speed(otherThingSpeed.getHorizontalDir() , otherThingSpeed.getVerticalDir(), otherThingSpeed.getSize()/3));
     }
 
     public void update() {
@@ -107,6 +116,10 @@ public class Ball implements Serializable {
             }
         }
 
+    }
+
+    public boolean isOutOfBoard(BoardProperties boardProperties){
+        return !Location.isInRange(ballCircle.getCenterX(), 0, boardProperties.getWidth());
     }
 
 

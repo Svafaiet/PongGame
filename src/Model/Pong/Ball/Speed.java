@@ -7,9 +7,10 @@ public class Speed implements Serializable {
     private double horizontalDir;
     private double verticalDir;
 
-    public Speed(double horizontalDir, double verticalDir) {
+    public Speed(double horizontalDir, double verticalDir, double size) {
         this.horizontalDir = horizontalDir;
         this.verticalDir = verticalDir;
+        this.size = size;
     }
 
     public double getSize() {

@@ -13,5 +13,5 @@ public abstract class Player implements Serializable {
         return playerProfile;
     }
 
-
+    public abstract void win();
 }

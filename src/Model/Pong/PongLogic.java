@@ -2,6 +2,7 @@ package Model.Pong;
 
 import Model.GameLogic;
 import Model.GameType;
+import Model.Player;
 import Model.Pong.Ball.Ball;
 import Model.Pong.Ball.BallType;
 import Model.Pong.Ball.Speed;
@@ -9,7 +10,12 @@ import Model.Pong.GoalKeeper.GoalKeeper;
 import Model.Pong.GoalKeeper.GoalKeeperType;
 import Model.Pong.GoalKeeper.Side;
 
+import java.time.Duration;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class PongLogic extends GameLogic {
+    public static final int WIN_SCORE = 5;
     public static final int DEFAULT_GAME_WIDTH = 640;
     public static final int DEFAULT_GAME_HEIGHT = 360;
 
@@ -18,10 +24,22 @@ public class PongLogic extends GameLogic {
     private GoalKeeper goalKeeper2;
     private Ball ball;
 
+    Timer timer = new Timer();
 
     public PongLogic() {
         setGameType(GameType.PONG);
 
+        setupGame();
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                update();
+            }
+        }, 0, 20);
+    }
+
+    public void setupGame() {
         boardProperties = BoardProperties.DEFAULT_BOARD;
 
         goalKeeper1 = new GoalKeeper(Side.LEFT, boardProperties);
@@ -62,15 +80,47 @@ public class PongLogic extends GameLogic {
     public void update() {
         reflectBall();
         ball.update();
+        if(ball.isOutOfBoard(boardProperties)) {
+            if(ball.getBallCircle().getCenterX() < 0) {
+                ((PongPlayer) getPlayers().get(0)).addScore();
+            } else {
+                ((PongPlayer) getPlayers().get(1)).addScore();
+            }
+            if(isGameFinished()) {
+                whoIsWinner().win();
+                timer.cancel();
+            }
+            setupGame();
+        }
+    }
 
+    private boolean isGameFinished() {
+        for(Player player : getPlayers()) {
+            PongPlayer pongPlayer = (PongPlayer) player;
+            if(pongPlayer.getScore() >= WIN_SCORE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Player whoIsWinner(){
+        for(Player player : getPlayers()) {
+            PongPlayer pongPlayer = (PongPlayer) player;
+            if(pongPlayer.getScore() >= WIN_SCORE) {
+                return player;
+            }
+        }
+        return null;
     }
 
     private void reflectBall() {
-        if (Location.isInRange(ball.getBallCircle().getCenterX(), 0, boardProperties.getWidth())) {
-            ball.reflectBall(new Speed(0, 0), true);
-        }
-        if (Location.isInRange(ball.getBallCircle().getCenterY(), 0, boardProperties.getHeight())) {
-            ball.reflectBall(new Speed(0, 0), false);
+//        if (!Location.isInRange(ball.getBallCircle().getCenterX(), 0, boardProperties.getWidth())) {
+//            ball.reflectBall(new Speed(0, 1, 0), true);
+//        }
+        if (!Location.isInRange(ball.getBallCircle().getCenterY(), ball.getBallCircle().getRadius(),
+                boardProperties.getHeight() - ball.getBallCircle().getRadius())) {
+            ball.reflectBall(new Speed(0, 1, 0), false);
         }
         ball.reflectFromGoalKeeper(goalKeeper1);
         ball.reflectFromGoalKeeper(goalKeeper2);

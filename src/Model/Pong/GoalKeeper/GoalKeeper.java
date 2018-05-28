@@ -58,26 +58,26 @@ public class GoalKeeper implements Serializable {
 
     public boolean isAtRight(Ball ball) {
         return Location.isInRange(ball.getBallCircle().getCenterY(),
-                (rectangle.getCenterY() - rectangle.getHeight()) / 2,
-                (rectangle.getCenterY() + rectangle.getHeight()) / 2)
+                (rectangle.getCenterY() - rectangle.getHeight() / 2),
+                (rectangle.getCenterY() + rectangle.getHeight() / 2))
                 &&
                 Location.isInRange(ball.getBallCircle().getCenterX(),
                         rectangle.getCenterX(),
-                        (rectangle.getCenterX() + rectangle.getWidth()) / 2);
+                        (rectangle.getCenterX() + (rectangle.getWidth() + ball.getBallCircle().getRadius()) / 2));
 
     }
 
     public boolean isAtLeft(Ball ball) {
         return Location.isInRange(ball.getBallCircle().getCenterY(),
-                (rectangle.getCenterY() - rectangle.getHeight()) / 2,
-                (rectangle.getCenterY() + rectangle.getHeight()) / 2)
+                (rectangle.getCenterY() - rectangle.getHeight() / 2) ,
+                (rectangle.getCenterY() + rectangle.getHeight() / 2) )
                 &&
                 Location.isInRange(ball.getBallCircle().getCenterX(),
-                        (rectangle.getCenterX() - rectangle.getWidth()) / 2,
+                        (rectangle.getCenterX() - (rectangle.getWidth() + ball.getBallCircle().getRadius()) / 2),
                         rectangle.getCenterX());
     }
 
     public Speed getSpeed() {
-        return new Speed(0, 0);
+        return new Speed(0, 1, 0);
     }
 }

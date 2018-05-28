@@ -1,5 +1,7 @@
 package View;
 
+import Controller.ClientController;
+import Model.Exceptions.DuplicatePlayerNameException;
 import View.utils.ErrorText;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -42,7 +44,15 @@ public class LoginScene extends Scene {
             if(profileName.equals("")) {
                 errorText.showError("Please Enter Your Name");
             } else {
-                // TODO: 5/28/2018
+                // FIXME: 5/28/2018
+                if(!AppGUI.getWorld().hasProfile(profileName)) {
+                    try {
+                        AppGUI.getWorld().addNewProfile(profileName);
+                    } catch (DuplicatePlayerNameException e) {
+                        e.printStackTrace();
+                    }
+                    ClientController.Instance.setClientName(profileName);
+                }
                 AppGUI.setStageScene(new MainMenuScene());
             }
         };

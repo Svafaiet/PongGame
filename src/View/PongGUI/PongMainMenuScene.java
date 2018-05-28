@@ -87,7 +87,7 @@ public class PongMainMenuScene extends BarScene {
         });
 
         newGameButton.setOnMouseClicked(event -> {
-            // TODO: 5/28/2018  
+            // TODO: 5/28/2018
         });
     }
 
