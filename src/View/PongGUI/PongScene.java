@@ -1,9 +1,11 @@
 package View.PongGUI;
 
+import Model.Game;
 import Model.Pong.Ball.Ball;
 import Model.Pong.GoalKeeper.GoalKeeper;
 import Model.Pong.PongLogic;
 import Model.Pong.PongPlayer;
+import View.AppGUI;
 import View.utils.BarScene;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
@@ -39,9 +41,9 @@ public class PongScene extends BarScene {
     private Text score2 = new Text("0");
 
 
-    public PongScene(PongLogic pongLogic) {
+    public PongScene(Game game) {
         super(new Group(), PONG_WIDTH + 2 * BORDER_SIZE, PONG_HEIGHT + BAR_HEIGHT + 2 *BORDER_SIZE, Color.BLACK);
-        this.pongLogic = pongLogic;
+        this.pongLogic = (PongLogic) game.getGameLogic();
         Group root = getMainPart();
         setBar();
         root.getChildren().add(new Rectangle(PONG_WIDTH + 2*BORDER_SIZE, PONG_HEIGHT + 2*BORDER_SIZE));
@@ -57,6 +59,11 @@ public class PongScene extends BarScene {
                 drawBall(pongLogic.getBall());
 
                 drawInformation();
+
+                if(pongLogic.isGameFinished()) {
+                    AppGUI.setStageScene(new PongMainMenuScene());
+                    stop();
+                }
             }
         };
         animationTimer.start();

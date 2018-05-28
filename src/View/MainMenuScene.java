@@ -55,13 +55,7 @@ public class MainMenuScene extends BarScene {
 
     public void showRanks() {
         // FIXME: 5/25/2018
-        ArrayList<Profile> profiles = new ArrayList<>();
-        profiles.add(new Profile("Ali"));
-        profiles.add(new Profile("Naghi"));
-        profiles.add(new Profile("Taghi"));
-        profiles.get(0).setWinCount(1);
-        profiles.get(1).setWinCount(1);
-        AppGUI.getGameStage().setScene(new RanksScene(profiles));
+        AppGUI.getGameStage().setScene(new RanksScene(AppGUI.getWorld().getProfiles()));
     }
 
     public void setBar(){

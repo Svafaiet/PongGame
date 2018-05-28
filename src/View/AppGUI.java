@@ -38,6 +38,10 @@ public final class AppGUI extends Application {
         return ClientController.Instance.getWorld();
     }
 
+    public static String getClientName() {
+        return ClientController.Instance.getClientName();
+    }
+
     public static Socket getClient() {
         return client;
     }
@@ -47,14 +51,7 @@ public final class AppGUI extends Application {
         gameStage = new Stage();
         getGameStage().setTitle("Game Center");
         getGameStage().setResizable(false);
-        ArrayList<Player> players = new ArrayList<>();
-        PongPlayer pongPlayer = new PongPlayer();
-        pongPlayer.setPlayerProfile(new Profile("ali"));
-        PongPlayer pongPlayer2 = new PongPlayer();
-        pongPlayer2.setPlayerProfile(new Profile("mali"));
-        players.add(pongPlayer);
-        players.add(pongPlayer2);
-        setStageScene(new PongScene((PongLogic)(new PongMaker()).makeNewGame(players)));
+        setStageScene(new LoginScene());
         getGameStage().show();
 
     }

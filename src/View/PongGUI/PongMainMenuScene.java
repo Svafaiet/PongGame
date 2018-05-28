@@ -1,5 +1,10 @@
 package View.PongGUI;
 
+import Model.Exceptions.DuplicateGameException;
+import Model.Exceptions.DuplicatePlayerNameException;
+import Model.Exceptions.PlayerNotFoundException;
+import Model.Game;
+import Model.GameType;
 import Model.Pong.PongLogic;
 import Model.WaitingGame;
 import View.AppGUI;
@@ -7,11 +12,13 @@ import View.ConstantColors;
 import View.SelectGameMenu;
 import View.utils.BarScene;
 import View.utils.ErrorText;
+import View.utils.PreWrittenTextField;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -87,8 +94,60 @@ public class PongMainMenuScene extends BarScene {
         });
 
         newGameButton.setOnMouseClicked(event -> {
-            // TODO: 5/28/2018
+            showHowToMakeNewGame();
         });
+    }
+
+    private void showHowToMakeNewGame() {
+        Rectangle container = new Rectangle();
+        dropShadow(container);
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setPrefWidth(getMainMenuWidth()*2/3);
+
+        HBox firstElement = new HBox(60);
+        firstElement.setAlignment(Pos.CENTER);
+
+        HBox secondElement = new HBox(20);
+        secondElement.setAlignment(Pos.CENTER_LEFT);
+
+        Button close = new Button("X");
+        close.setId("closeButton");
+        Label label = new Label("Make newGame");
+        label.setStyle("-fx-text-fill: #76c7d3");
+        firstElement.getChildren().addAll(label, close);
+
+        TextField gameNameField = new PreWrittenTextField("Game Name");
+        TextField secondPlayerField = new PreWrittenTextField("Second Player");
+        Button start = new Button("Start!");
+        start.setOnMouseClicked(event -> {
+            try {
+                AppGUI.getWorld().makeNewGame(AppGUI.getClientName(), gameNameField.getText(), GameType.PONG);
+
+                if (!AppGUI.getWorld().hasProfile(secondPlayerField.getText())) {
+                    AppGUI.getWorld().addNewProfile(secondPlayerField.getText());
+                }
+                AppGUI.getWorld().addPlayerToGame(secondPlayerField.getText(), gameNameField.getText());
+                AppGUI.setStageScene(new PongScene(AppGUI.getWorld().getRunningGame(gameNameField.getText())));
+            } catch (Exception e) {
+            }
+        });
+        secondElement.getChildren().addAll(gameNameField, secondPlayerField, start);
+
+        vBox.getChildren().addAll(firstElement, secondElement);
+
+        vBox.setId("floatingMenu");
+        AppGUI.getGameStage().show();
+        ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().addAll(container, vBox);
+        vBox.relocate((getMainMenuWidth() - vBox.getPrefWidth())/2,
+                (getMainMenuHeight() - vBox.getPrefHeight() - getMainMenuHeight()/5)/2);
+
+        close.setOnMouseClicked(event -> {
+            ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().remove(vBox);
+            ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().remove(container);
+        });
+
+        container.setOnMouseClicked(close.getOnMouseClicked());
     }
 
     public void makeOptionsLANMode(){
@@ -100,19 +159,9 @@ public class PongMainMenuScene extends BarScene {
         options.getChildren().clear();
         options.getChildren().addAll(makeGameButton, joinGameButton);
 
-        makeGameButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                showSelectHowToMakeGame();
-            }
-        });
+        makeGameButton.setOnMouseClicked(event -> showSelectHowToMakeGame());
 
-        joinGameButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                showSelectHowToConnect();
-            }
-        });
+        joinGameButton.setOnMouseClicked(event -> showSelectHowToConnect());
     }
 
     public void showSelectHowToMakeGame() {
@@ -169,18 +218,7 @@ public class PongMainMenuScene extends BarScene {
             vBox.getChildren().addAll(new Label("no game found"));
         }
 
-        vBox.setId("floatingMenu");
-        AppGUI.getGameStage().show();
-        ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().addAll(container, vBox);
-        vBox.relocate((getMainMenuWidth() - vBox.getPrefWidth())/2,
-                (getMainMenuHeight() - vBox.getPrefHeight() - getMainMenuHeight()/5)/2);
 
-        close.setOnMouseClicked(event -> {
-            ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().remove(vBox);
-            ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().remove(container);
-        });
-
-        container.setOnMouseClicked(close.getOnMouseClicked());
     }
 
     public void setBar(){

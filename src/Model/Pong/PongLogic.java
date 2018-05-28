@@ -94,7 +94,7 @@ public class PongLogic extends GameLogic {
         }
     }
 
-    private boolean isGameFinished() {
+    public boolean isGameFinished() {
         for(Player player : getPlayers()) {
             PongPlayer pongPlayer = (PongPlayer) player;
             if(pongPlayer.getScore() >= WIN_SCORE) {
