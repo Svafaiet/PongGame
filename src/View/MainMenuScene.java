@@ -1,17 +1,15 @@
 package View;
 
 import Model.Profile;
-import View.PongGUI.BarScene;
+import View.utils.BarScene;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class MainMenuScene extends BarScene {

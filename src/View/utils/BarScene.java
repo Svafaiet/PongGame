@@ -1,4 +1,4 @@
-package View.PongGUI;
+package View.utils;
 
 import View.MainMenuScene;
 import javafx.scene.Group;

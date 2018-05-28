@@ -3,27 +3,18 @@ package View.PongGUI;
 import Model.WaitingGame;
 import View.AppGUI;
 import View.ConstantColors;
-import View.MainMenuScene;
 import View.SelectGameMenu;
-import com.sun.javafx.geom.Area;
-import javafx.animation.ScaleTransition;
+import View.utils.BarScene;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.stage.Screen;
-import javafx.util.Duration;
 
 public class PongMainMenuScene extends BarScene {
     public static double getMainMenuWidth(){

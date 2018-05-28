@@ -12,7 +12,7 @@ package Controller.Packets;
  */
 
 public class ServerPacket {
-    private String packetType;
+    private ServerPacketType packetType;
     private String firstArgument;
     private String secondArgument;
     private String fromMassage;
@@ -40,11 +40,11 @@ public class ServerPacket {
         this.fromMassage = fromMassage;
     }
 
-    public String getPacketType() {
+    public ServerPacketType getPacketType() {
         return packetType;
     }
 
-    public void setPacketType(String packetType) {
+    public void setPacketType(ServerPacketType packetType) {
         this.packetType = packetType;
     }
 

@@ -2,6 +2,6 @@ package Controller.utils;
 
 import Controller.Packets.ServerPacket;
 
-public interface ServerMassageListener {
+public interface ServerPackageListener {
     void receive(ServerPacket serverPacket);
 }

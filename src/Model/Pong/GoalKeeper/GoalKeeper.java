@@ -12,7 +12,7 @@ public class GoalKeeper implements Serializable {
     public static final double DEFAULT_GOALKEEPER_WIDTH = 8;
     public static final GoalKeeperType DEFAULT_GOALKEEPER_TYPE = GoalKeeperType.CLASSIC;
 
-    private Rectangle rectangle;
+    private GoalKeeperRectangle rectangle;
     private GoalKeeperType goalKeeperType;
     private Side side;
 
@@ -37,7 +37,7 @@ public class GoalKeeper implements Serializable {
     }
 
 
-    public Rectangle getRectangle() {
+    public GoalKeeperRectangle getRectangle() {
         return rectangle;
     }
 
@@ -47,23 +47,23 @@ public class GoalKeeper implements Serializable {
 
     public boolean isAtRight(Ball ball) {
         return Location.isInRange(ball.getBallCircle().getCenterY(),
-                (rectangle.getY() - rectangle.getHeight()) / 2,
-                (rectangle.getY() + rectangle.getHeight()) / 2)
+                (rectangle.getCenterY() - rectangle.getHeight()) / 2,
+                (rectangle.getCenterY() + rectangle.getHeight()) / 2)
                 &&
                 Location.isInRange(ball.getBallCircle().getCenterX(),
-                        rectangle.getX(),
-                        (rectangle.getX() + rectangle.getWidth()) / 2);
+                        rectangle.getCenterX(),
+                        (rectangle.getCenterX() + rectangle.getWidth()) / 2);
 
     }
 
     public boolean isAtLeft(Ball ball) {
         return Location.isInRange(ball.getBallCircle().getCenterY(),
-                (rectangle.getY() - rectangle.getHeight()) / 2,
-                (rectangle.getY() + rectangle.getHeight()) / 2)
+                (rectangle.getCenterY() - rectangle.getHeight()) / 2,
+                (rectangle.getCenterY() + rectangle.getHeight()) / 2)
                 &&
                 Location.isInRange(ball.getBallCircle().getCenterX(),
-                        (rectangle.getX() - rectangle.getWidth()) / 2,
-                        rectangle.getX());
+                        (rectangle.getCenterX() - rectangle.getWidth()) / 2,
+                        rectangle.getCenterX());
     }
 
     public Speed getSpeed() {

@@ -1,19 +1,16 @@
 package View;
 
 import Model.Profile;
-import View.PongGUI.BarScene;
+import View.utils.BarScene;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;

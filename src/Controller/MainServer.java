@@ -2,25 +2,22 @@ package Controller;
 
 import Controller.Packets.ServerPacket;
 import Controller.utils.ConnectionManager;
-import Controller.utils.ServerMassageListener;
+import Controller.utils.ServerPackageListener;
 import Model.Exceptions.DuplicateGameException;
 import Model.Exceptions.DuplicatePlayerNameException;
 import Model.Exceptions.PlayerNotFoundException;
 import Model.GameType;
 import Model.Profile;
 import Model.World;
-import com.sun.xml.internal.bind.v2.TODO;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
-public class MainServer implements ServerMassageListener {
+public class MainServer implements ServerPackageListener {
     private static MainServer instance = new MainServer(ConnectionManager.MAIN_SERVER_PORT);
     private int port;
     private ServerSocket serverSocket;
@@ -61,14 +58,12 @@ public class MainServer implements ServerMassageListener {
             while (true) {
                 try {
                     Socket client = serverSocket.accept();
-                    ObjectInputStream objectInputStream = new ObjectInputStream(client.getInputStream());
                     ServerPacket serverPacket;
-                    try {
+                    try (ObjectInputStream objectInputStream = new ObjectInputStream(client.getInputStream())) {
                         serverPacket = (ServerPacket) objectInputStream.readObject();
                     } catch (ClassNotFoundException e) {
                         // TODO: 5/28/2018 send Massage
                         client.close();
-                        objectInputStream.close();
                         continue;
                     }
                     if(!world.hasProfile(serverPacket.getFromMassage())) {
@@ -92,6 +87,7 @@ public class MainServer implements ServerMassageListener {
                             e.printStackTrace();
                         }
                     }
+                    receive(serverPacket);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -107,14 +103,14 @@ public class MainServer implements ServerMassageListener {
     @Override
     public void receive(ServerPacket serverPacket) {
         switch (serverPacket.getPacketType()) {
-            case "ADD_PROFILE":
+            case ADD_PROFILE:
                 try {
                     world.addNewProfile(serverPacket.getFirstArgument());
                 } catch (DuplicatePlayerNameException e) {
                     // TODO: 5/24/2018
                 }
                 break;
-            case "START":
+            case START:
                 try {
                     world.makeNewGame(serverPacket.getFromMassage(), serverPacket.getSecondArgument(), GameType.valueOf(serverPacket.getFirstArgument()));
                 } catch (PlayerNotFoundException e) {
@@ -123,14 +119,14 @@ public class MainServer implements ServerMassageListener {
                     // TODO: 5/24/2018
                 }
                 break;
-            case "JOIN":
+            case JOIN:
                 try {
                     world.addPlayerToGame(serverPacket.getFromMassage(), serverPacket.getFirstArgument());
                 } catch (PlayerNotFoundException e) {
                     e.printStackTrace();
                 }
                 break;
-            case "PONG_ACTION":
+            case PONG_ACTION:
                 if (serverPacket.getFirstArgument().equals("UP")) {
 
                     // TODO: 5/24/2018
@@ -139,6 +135,12 @@ public class MainServer implements ServerMassageListener {
                 } else {
                     //INVALID packet todo
                 }
+                break;
+            case GET_AVAILABLE_GAMES:
+                // TODO: 5/28/2018
+                break;
+            case GET_PROFILE:
+
                 break;
             default:
                     //INVALID packet todo

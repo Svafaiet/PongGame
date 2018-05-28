@@ -1,19 +1,14 @@
 package View;
 
 import Model.GameType;
-import View.PongGUI.BarScene;
+import View.utils.BarScene;
 import View.PongGUI.PongMainMenuScene;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Screen;
 
 
 public class SelectGameMenu extends BarScene {

@@ -1,14 +1,22 @@
 package View;
 
+import View.utils.ErrorText;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+import java.util.function.Consumer;
 
 public class LoginScene extends Scene {
 
@@ -30,11 +38,23 @@ public class LoginScene extends Scene {
         loginBox.setAlignment(Pos.CENTER);
         loginButton.setStyle("-fx-min-height: 20");
 
-        Text errorText = new Text("");
-        errorText.setStyle("-fx-text-fill: red;");
+        ErrorText errorText = new ErrorText("");
 
         vBox.getChildren().addAll(loginText, loginBox, errorText);
         root.getChildren().addAll(vBox);
+
+        EventHandler<InputEvent> eventHandler = event -> {
+            String profileName = loginField.getText();
+            if(profileName.equals("")) {
+                errorText.setText("Please Enter Your Name");
+            } else {
+                // TODO: 5/28/2018  
+                AppGUI.gameStage.setScene(new MainMenuScene());
+            }
+        };
+
+        loginButton.setOnMouseClicked(eventHandler);
+        loginBox.setOnKeyPressed(eventHandler);
     }
 
 }
