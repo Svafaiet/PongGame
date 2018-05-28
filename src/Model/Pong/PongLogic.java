@@ -125,4 +125,20 @@ public class PongLogic extends GameLogic {
         ball.reflectFromGoalKeeper(goalKeeper1);
         ball.reflectFromGoalKeeper(goalKeeper2);
     }
+
+    public void moveGoalKeeperUp(int goalKeeperNumber) {
+        if(goalKeeperNumber == 1) {
+            goalKeeper1.moveUp(boardProperties);
+        } else {
+            goalKeeper2.moveUp(boardProperties);
+        }
+    }
+
+    public void moveGoalKeeperDown(int goalKeeperNumber) {
+        if(goalKeeperNumber == 1) {
+            goalKeeper1.moveDown(boardProperties);
+        } else {
+            goalKeeper2.moveDown(boardProperties);
+        }
+    }
 }

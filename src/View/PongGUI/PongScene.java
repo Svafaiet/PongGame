@@ -11,6 +11,7 @@ import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -18,6 +19,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 public class PongScene extends BarScene {
@@ -40,14 +46,17 @@ public class PongScene extends BarScene {
     private Text score1 = new Text("0");
     private Text score2 = new Text("0");
 
+    private Set<KeyCode> activeKeys;
+    private Map<KeyCode, String> keyMeaning;
 
     public PongScene(Game game) {
-        super(new Group(), PONG_WIDTH + 2 * BORDER_SIZE, PONG_HEIGHT + BAR_HEIGHT + 2 *BORDER_SIZE, Color.BLACK);
+        super(new Group(), PONG_WIDTH + 2 * BORDER_SIZE, PONG_HEIGHT + BAR_HEIGHT + 2 * BORDER_SIZE, Color.BLACK);
         this.pongLogic = (PongLogic) game.getGameLogic();
         Group root = getMainPart();
         setBar();
-        root.getChildren().add(new Rectangle(PONG_WIDTH + 2*BORDER_SIZE, PONG_HEIGHT + 2*BORDER_SIZE));
+        root.getChildren().add(new Rectangle(PONG_WIDTH + 2 * BORDER_SIZE, PONG_HEIGHT + 2 * BORDER_SIZE));
 
+        setupKeyEvents();
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -60,10 +69,13 @@ public class PongScene extends BarScene {
 
                 drawInformation();
 
-                if(pongLogic.isGameFinished()) {
+                handleKeys();
+
+                if (pongLogic.isGameFinished()) {
                     AppGUI.setStageScene(new PongMainMenuScene());
                     stop();
                 }
+
             }
         };
         animationTimer.start();
@@ -72,11 +84,11 @@ public class PongScene extends BarScene {
 
     public void setBar() {
         getBar().setMaxHeight(40);
-        getBar().setMaxWidth(PONG_WIDTH + 2*BORDER_SIZE);
+        getBar().setMaxWidth(PONG_WIDTH + 2 * BORDER_SIZE);
         getBar().setStyle("-fx-border-color: white;");
         getBar().setAlignment(Pos.CENTER);
-        getBar().setPadding(new Insets(0,0,BORDER_SIZE,0));
-        score1.setFill(Color.color((double)0x19/256,(double)0xfb/256,(double)0xff/256));
+        getBar().setPadding(new Insets(0, 0, BORDER_SIZE, 0));
+        score1.setFill(Color.color((double) 0x19 / 256, (double) 0xfb / 256, (double) 0xff / 256));
         score2.setFill(Color.RED);
         chronometer.setFill(Color.WHITE);
         score1.setFont(new Font(30));
@@ -89,6 +101,51 @@ public class PongScene extends BarScene {
         HBox.setHgrow(region1, Priority.ALWAYS);
         HBox.setHgrow(region2, Priority.ALWAYS);
         getBar().getChildren().addAll(score1, region1, chronometer, region2, score2);
+    }
+
+    private void setupKeyEvents() {
+        activeKeys = new HashSet<>();
+        this.setOnKeyPressed(event -> activeKeys.add(event.getCode()));
+        this.setOnKeyReleased(event -> activeKeys.remove(event.getCode()));
+
+        keyMeaning = new HashMap<>();
+        keyMeaning.put(KeyCode.P, "PAUSE");
+        keyMeaning.put(KeyCode.UP, "UP_GOALKEEPER2");
+        keyMeaning.put(KeyCode.DOWN, "DOWN_GOALKEEPER2");
+        keyMeaning.put(KeyCode.W, "UP_GOALKEEPER1");
+        keyMeaning.put(KeyCode.S, "DOWN_GOALKEEPER1");
+
+
+    }
+
+    private void handleKeys() {
+        for (KeyCode keyCode : activeKeys) {
+            sendCommand(keyCode);
+        }
+    }
+
+    private void sendCommand(KeyCode keyCode) {
+        // FIXME: 5/29/2018 SINGLE_PLAYER_ONLY
+        if (keyMeaning.keySet().contains(keyCode)) {
+            switch (keyMeaning.get(keyCode)) {
+                case "PAUSE":
+                    // TODO: 5/29/2018
+                    break;
+                case "UP_GOALKEEPER1":
+                    pongLogic.moveGoalKeeperUp(1);
+                    break;
+                case "DOWN_GOALKEEPER1":
+                    pongLogic.moveGoalKeeperDown(1);
+                    break;
+                case "UP_GOALKEEPER2":
+                    pongLogic.moveGoalKeeperUp(2);
+                    break;
+                case "DOWN_GOALKEEPER2":
+                    pongLogic.moveGoalKeeperDown(2);
+                    break;
+
+            }
+        }
     }
 
     private void drawGoalKeeper(GoalKeeper goalKeeper, Rectangle rectangle) {
@@ -106,7 +163,7 @@ public class PongScene extends BarScene {
 
         switch (goalKeeper.getSide()) {
             case LEFT:
-                rectangle.setFill(Color.color((double)0x19/256,(double)0xfb/256,(double)0xff/256));
+                rectangle.setFill(Color.color((double) 0x19 / 256, (double) 0xfb / 256, (double) 0xff / 256));
                 break;
             case RIGHT:
                 rectangle.setFill(Color.RED);
@@ -138,17 +195,17 @@ public class PongScene extends BarScene {
         this.ball.setFill(Color.WHITE);
     }
 
-    private void drawInformation(){
-        score1.setText("" + ((PongPlayer)pongLogic.getPlayers().get(0)).getScore());
-        score2.setText("" + ((PongPlayer)pongLogic.getPlayers().get(1)).getScore());
+    private void drawInformation() {
+        score1.setText("" + ((PongPlayer) pongLogic.getPlayers().get(0)).getScore());
+        score2.setText("" + ((PongPlayer) pongLogic.getPlayers().get(1)).getScore());
         // TODO: 5/28/2018  
     }
 
     private double castLogicalXToGraphical(double x) {
-        return BORDER_SIZE + x*xMultiplier;
+        return BORDER_SIZE + x * xMultiplier;
     }
 
     private double castLogicalYToGraphical(double y) {
-        return BORDER_SIZE + y*yMultiplier;
+        return BORDER_SIZE + y * yMultiplier;
     }
 }

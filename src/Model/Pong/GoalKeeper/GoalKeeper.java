@@ -12,6 +12,7 @@ public class GoalKeeper implements Serializable {
     public static final double DEFAULT_GOALKEEPER_HEIGHT = 66;
     public static final double DEFAULT_GOALKEEPER_WIDTH = 14;
     public static final GoalKeeperType DEFAULT_GOALKEEPER_TYPE = GoalKeeperType.CLASSIC;
+    public static final double MOVE_AMOUNT = 2;
 
     private GoalKeeperRectangle rectangle = new GoalKeeperRectangle();
     private GoalKeeperType goalKeeperType;
@@ -79,5 +80,17 @@ public class GoalKeeper implements Serializable {
 
     public Speed getSpeed() {
         return new Speed(0, 1, 0);
+    }
+
+    public void moveUp(BoardProperties boardProperties) {
+        if((rectangle.getCenterY() >= rectangle.getHeight()/2 )) {
+        rectangle.setCenterY(rectangle.getCenterY() - MOVE_AMOUNT);
+        }
+    }
+
+    public void moveDown(BoardProperties boardProperties){
+        if((rectangle.getCenterY() <= boardProperties.getHeight() - rectangle.getHeight()/2 )) {
+            rectangle.setCenterY(rectangle.getCenterY() + MOVE_AMOUNT);
+        }
     }
 }

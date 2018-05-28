@@ -2,23 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/View/utils/PreWrittenTextField.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/Controller/ClientController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Pong/Controller/ClientController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/View/AppGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Pong/View/AppGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/View/LoginScene.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Pong/View/LoginScene.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/View/PongGUI/PongMainMenuScene$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/View/PongGUI/PongMainMenuScene$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/View/PongGUI/PongMainMenuScene$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/View/PongGUI/PongMainMenuScene$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/View/PongGUI/PongMainMenuScene.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/View/PongGUI/PongScene$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/View/PongGUI/PongScene$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Pong/View/PongGUI/PongScene.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Pong/PongLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Pong/PongLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/AppGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/AppGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MainMenuScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainMenuScene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/PongGUI/PongMainMenuScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/PongGUI/PongMainMenuScene.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/PongGUI/PongScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/PongGUI/PongScene.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
@@ -80,7 +66,7 @@
       <file leaf-file-name="PongMainMenuScene.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/PongGUI/PongMainMenuScene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
+            <state relative-caret-position="158">
               <caret line="105" column="46" selection-start-line="105" selection-start-column="46" selection-end-line="105" selection-end-column="46" />
               <folding>
                 <element signature="method#getMainMenuWidth#0;class#PongMainMenuScene#0" />
@@ -95,13 +81,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PongScene.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PongScene.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/PongGUI/PongScene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="63" column="66" lean-forward="true" selection-start-line="63" selection-start-column="66" selection-end-line="63" selection-end-column="66" />
+            <state relative-caret-position="260">
+              <caret line="115" column="39" selection-start-line="115" selection-start-column="39" selection-end-line="115" selection-end-column="39" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="method#setBar#0;class#PongScene#0" />
+                <element signature="method#drawGoalKeeper#0;class#PongScene#0" />
+                <element signature="method#drawClassicGoalKeeper#0;class#PongScene#0" />
+                <element signature="method#drawBall#0;class#PongScene#0" />
+                <element signature="method#drawClassicBall#0;class#PongScene#0" />
+                <element signature="method#drawInformation#0;class#PongScene#0" />
               </folding>
             </state>
           </provider>
@@ -110,8 +101,36 @@
       <file leaf-file-name="PongLogic.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/Pong/PongLogic.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="96" column="10" selection-start-line="96" selection-start-column="10" selection-end-line="96" selection-end-column="10" />
+            <state relative-caret-position="56">
+              <caret line="128" column="11" selection-start-line="128" selection-start-column="11" selection-end-line="128" selection-end-column="11" />
+              <folding>
+                <element signature="e#1899#1900#0" expanded="true" />
+                <element signature="e#1933#1934#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GoalKeeperRectangle.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeperRectangle.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="21">
+              <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
+              <folding>
+                <element signature="e#261#262#0" expanded="true" />
+                <element signature="e#290#291#0" expanded="true" />
+                <element signature="e#690#691#0" expanded="true" />
+                <element signature="e#728#729#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GoalKeeper.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="14" column="46" selection-start-line="14" selection-start-column="46" selection-end-line="14" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -120,7 +139,7 @@
         <entry file="file://$PROJECT_DIR$/src/View/RanksScene.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="48">
-              <caret line="19" column="18" lean-forward="true" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
+              <caret line="19" column="18" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -141,41 +160,9 @@
         <entry file="file://$PROJECT_DIR$/src/View/MainMenuScene.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="228">
-              <caret line="41" column="45" lean-forward="true" selection-start-line="41" selection-start-column="45" selection-end-line="41" selection-end-column="45" />
+              <caret line="41" column="45" selection-start-line="41" selection-start-column="45" selection-end-line="41" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LoginScene.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/LoginScene.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="51" column="44" lean-forward="true" selection-start-line="51" selection-start-column="44" selection-end-line="51" selection-end-column="44" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClientController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Controller/ClientController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="33" column="39" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
-              <folding>
-                <element signature="e#335#336#0" expanded="true" />
-                <element signature="e#370#371#0" expanded="true" />
-                <element signature="e#508#509#0" expanded="true" />
-                <element signature="e#536#537#0" expanded="true" />
-                <element signature="e#631#632#0" expanded="true" />
-                <element signature="e#664#665#0" expanded="true" />
-                <element signature="e#716#717#0" expanded="true" />
-                <element signature="e#760#761#0" expanded="true" />
-                <element signature="e#775#776#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -288,7 +275,6 @@
         <option value="$PROJECT_DIR$/src/View/RanksScene.java" />
         <option value="$PROJECT_DIR$/src/Model/Pong/Ball/Speed.java" />
         <option value="$PROJECT_DIR$/src/Model/Pong/Location.java" />
-        <option value="$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeper.java" />
         <option value="$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeperRectangle.java" />
         <option value="$PROJECT_DIR$/src/Model/Player.java" />
         <option value="$PROJECT_DIR$/src/Model/Pong/PongPlayer.java" />
@@ -300,9 +286,10 @@
         <option value="$PROJECT_DIR$/src/View/utils/PreWrittenTextField.java" />
         <option value="$PROJECT_DIR$/src/View/AppGUI.java" />
         <option value="$PROJECT_DIR$/src/View/PongGUI/PongMainMenuScene.java" />
-        <option value="$PROJECT_DIR$/src/Model/Pong/PongLogic.java" />
         <option value="$PROJECT_DIR$/src/View/MainMenuScene.java" />
+        <option value="$PROJECT_DIR$/src/Model/Pong/PongLogic.java" />
         <option value="$PROJECT_DIR$/src/View/PongGUI/PongScene.java" />
+        <option value="$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeper.java" />
       </list>
     </option>
   </component>
@@ -569,7 +556,7 @@
       <workItem from="1527157919177" duration="22639000" />
       <workItem from="1527197479799" duration="609000" />
       <workItem from="1527200320023" duration="7619000" />
-      <workItem from="1527500790606" duration="30412000" />
+      <workItem from="1527500790606" duration="34031000" />
     </task>
     <task id="LOCAL-00001" summary="serverPacketType made, fixes in PongLogic, LoginMenu access to nextMenu">
       <created>1527506536409</created>
@@ -589,7 +576,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="129491000" />
+    <option name="totallyTimeSpent" value="133110000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
@@ -605,11 +592,11 @@
       <window_info anchor="right" id="Maven Projects" order="4" />
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.3291592" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32737032" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32737032" />
       <window_info anchor="bottom" id="Terminal" order="15" weight="0.3291592" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.16518219" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.16518219" />
       <window_info anchor="bottom" id="Statistic" order="14" weight="0.3237925" />
       <window_info anchor="right" id="Database" order="5" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32737032" />
@@ -917,34 +904,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="15" column="22" lean-forward="true" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeperRectangle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
-          <folding>
-            <element signature="e#261#262#0" expanded="true" />
-            <element signature="e#290#291#0" expanded="true" />
-            <element signature="e#608#609#0" expanded="true" />
-            <element signature="e#638#639#0" expanded="true" />
-            <element signature="e#616#617#0" expanded="true" />
-            <element signature="e#664#665#0" expanded="true" />
-            <element signature="e#698#699#0" expanded="true" />
-            <element signature="e#728#729#0" expanded="true" />
-            <element signature="e#756#757#0" expanded="true" />
-            <element signature="e#786#787#0" expanded="true" />
-            <element signature="e#774#775#0" expanded="true" />
-            <element signature="e#823#824#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/lang/Math.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -1047,7 +1006,7 @@
     <entry file="file://$PROJECT_DIR$/src/View/LoginScene.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="188">
-          <caret line="51" column="44" lean-forward="true" selection-start-line="51" selection-start-column="44" selection-end-line="51" selection-end-column="44" />
+          <caret line="51" column="44" selection-start-line="51" selection-start-column="44" selection-end-line="51" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1091,17 +1050,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Pong/PongLogic.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="96" column="10" selection-start-line="96" selection-start-column="10" selection-end-line="96" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/RanksScene.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="48">
-          <caret line="19" column="18" lean-forward="true" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
+          <caret line="19" column="18" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1111,16 +1063,29 @@
     <entry file="file://$PROJECT_DIR$/src/View/MainMenuScene.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
-          <caret line="41" column="45" lean-forward="true" selection-start-line="41" selection-start-column="45" selection-end-line="41" selection-end-column="45" />
+          <caret line="41" column="45" selection-start-line="41" selection-start-column="45" selection-end-line="41" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeperRectangle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
+          <folding>
+            <element signature="e#261#262#0" expanded="true" />
+            <element signature="e#290#291#0" expanded="true" />
+            <element signature="e#690#691#0" expanded="true" />
+            <element signature="e#728#729#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/PongGUI/PongMainMenuScene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
+        <state relative-caret-position="158">
           <caret line="105" column="46" selection-start-line="105" selection-start-column="46" selection-end-line="105" selection-end-column="46" />
           <folding>
             <element signature="method#getMainMenuWidth#0;class#PongMainMenuScene#0" />
@@ -1134,13 +1099,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Pong/PongLogic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="128" column="11" selection-start-line="128" selection-start-column="11" selection-end-line="128" selection-end-column="11" />
+          <folding>
+            <element signature="e#1899#1900#0" expanded="true" />
+            <element signature="e#1933#1934#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/PongGUI/PongScene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="63" column="66" lean-forward="true" selection-start-line="63" selection-start-column="66" selection-end-line="63" selection-end-column="66" />
+        <state relative-caret-position="260">
+          <caret line="115" column="39" selection-start-line="115" selection-start-column="39" selection-end-line="115" selection-end-column="39" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="method#setBar#0;class#PongScene#0" />
+            <element signature="method#drawGoalKeeper#0;class#PongScene#0" />
+            <element signature="method#drawClassicGoalKeeper#0;class#PongScene#0" />
+            <element signature="method#drawBall#0;class#PongScene#0" />
+            <element signature="method#drawClassicBall#0;class#PongScene#0" />
+            <element signature="method#drawInformation#0;class#PongScene#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Pong/GoalKeeper/GoalKeeper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="14" column="46" selection-start-line="14" selection-start-column="46" selection-end-line="14" selection-end-column="46" />
         </state>
       </provider>
     </entry>
