@@ -1,7 +1,9 @@
 package View;
 
+import Model.Pong.PongLogic;
 import Model.World;
 import View.PongGUI.PongMainMenuScene;
+import View.PongGUI.PongScene;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,7 +23,7 @@ public final class AppGUI extends Application {
         gameStage = new Stage();
         gameStage.setTitle("Game Center");
         gameStage.setResizable(false);
-        gameStage.setScene(new LoginScene());
+        gameStage.setScene(new PongScene(new PongLogic()));
         gameStage.show();
     }
 

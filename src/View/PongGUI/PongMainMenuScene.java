@@ -1,10 +1,12 @@
 package View.PongGUI;
 
+import Model.Pong.PongLogic;
 import Model.WaitingGame;
 import View.AppGUI;
 import View.ConstantColors;
 import View.SelectGameMenu;
 import View.utils.BarScene;
+import View.utils.ErrorText;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -73,10 +75,20 @@ public class PongMainMenuScene extends BarScene {
     public void makeOptionsCustomGame(){
         Button newGameButton = new Button("New Game");
         Button loadGameButton = new Button("Load Game");
+        ErrorText errorText = new ErrorText();
         newGameButton.setPrefWidth(0.70*getMainMenuWidth()*3/5);
         loadGameButton.setPrefWidth(0.70*getMainMenuWidth()*3/5);
         options.getChildren().clear();
-        options.getChildren().addAll(newGameButton, loadGameButton);
+        options.getChildren().addAll(newGameButton, loadGameButton, errorText);
+
+
+        loadGameButton.setOnMouseClicked(event -> {
+            errorText.showError("Not Available at this Version");
+        });
+
+        newGameButton.setOnMouseClicked(event -> {
+            AppGUI.gameStage.setScene(new PongScene(new PongLogic()));
+        });
     }
 
     public void makeOptionsLANMode(){
@@ -148,11 +160,8 @@ public class PongMainMenuScene extends BarScene {
         for(WaitingGame waitingGame : AppGUI.world.getWaitingGames()) {
             Button newGame = new Button(waitingGame.getSaveName() +
                     "(" + waitingGame.getProfiles().size() + "/" + waitingGame.getGameMaker().getPlayerCout()+ ")");
-            newGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    // TODO: 5/24/2018
-                }
+            newGame.setOnMouseClicked(event -> {
+                // TODO: 5/24/2018
             });
             vBox.getChildren().add(newGame);
         }
@@ -166,12 +175,9 @@ public class PongMainMenuScene extends BarScene {
         vBox.relocate((getMainMenuWidth() - vBox.getPrefWidth())/2,
                 (getMainMenuHeight() - vBox.getPrefHeight() - getMainMenuHeight()/5)/2);
 
-        close.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                ((Group) AppGUI.gameStage.getScene().getRoot()).getChildren().remove(vBox);
-                ((Group) AppGUI.gameStage.getScene().getRoot()).getChildren().remove(container);
-            }
+        close.setOnMouseClicked(event -> {
+            ((Group) AppGUI.gameStage.getScene().getRoot()).getChildren().remove(vBox);
+            ((Group) AppGUI.gameStage.getScene().getRoot()).getChildren().remove(container);
         });
 
         container.setOnMouseClicked(close.getOnMouseClicked());
@@ -183,12 +189,9 @@ public class PongMainMenuScene extends BarScene {
         getBar().getChildren().addAll(back);
         back.setPrefHeight(getMainMenuHeight()/10);
 
-        back.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                AppGUI.gameStage.setScene(new SelectGameMenu());
-                AppGUI.gameStage.show();
-            }
+        back.setOnMouseClicked(event -> {
+            AppGUI.gameStage.setScene(new SelectGameMenu());
+            AppGUI.gameStage.show();
         });
     }
 }

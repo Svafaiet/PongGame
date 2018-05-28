@@ -62,6 +62,7 @@ public class PongLogic extends GameLogic {
     public void update() {
         reflectBall();
         ball.update();
+
     }
 
     private void reflectBall() {

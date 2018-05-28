@@ -12,14 +12,22 @@ public class GoalKeeper implements Serializable {
     public static final double DEFAULT_GOALKEEPER_WIDTH = 8;
     public static final GoalKeeperType DEFAULT_GOALKEEPER_TYPE = GoalKeeperType.CLASSIC;
 
-    private GoalKeeperRectangle rectangle;
+    private GoalKeeperRectangle rectangle = new GoalKeeperRectangle();
     private GoalKeeperType goalKeeperType;
     private Side side;
 
     public GoalKeeper(Side side) {
         goalKeeperType = DEFAULT_GOALKEEPER_TYPE;
         rectangle.setHeight(DEFAULT_GOALKEEPER_HEIGHT);
-        rectangle.setWidth(DEFAULT_GOALKEEPER_WIDTH);
+        switch (side) {
+            case RIGHT:
+                rectangle.setWidth(DEFAULT_GOALKEEPER_WIDTH);
+                break;
+            case LEFT:
+                rectangle.setWidth(0);
+                break;
+        }
+
         this.side = side;
     }
 

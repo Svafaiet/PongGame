@@ -1,6 +1,8 @@
 package Model.Pong.Ball;
 
-public class BallCircle {
+import java.io.Serializable;
+
+public class BallCircle implements Serializable {
     private double centerX;
     private double centerY;
     private double radius;

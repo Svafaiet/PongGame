@@ -1,6 +1,8 @@
 package Model.Pong.GoalKeeper;
 
-public class GoalKeeperRectangle {
+import java.io.Serializable;
+
+public class GoalKeeperRectangle implements Serializable {
     private double height;
     private double width;
     private double centerX;

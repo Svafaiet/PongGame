@@ -38,7 +38,7 @@ public class LoginScene extends Scene {
         loginBox.setAlignment(Pos.CENTER);
         loginButton.setStyle("-fx-min-height: 20");
 
-        ErrorText errorText = new ErrorText("");
+        ErrorText errorText = new ErrorText();
 
         vBox.getChildren().addAll(loginText, loginBox, errorText);
         root.getChildren().addAll(vBox);
@@ -46,9 +46,9 @@ public class LoginScene extends Scene {
         EventHandler<InputEvent> eventHandler = event -> {
             String profileName = loginField.getText();
             if(profileName.equals("")) {
-                errorText.setText("Please Enter Your Name");
+                errorText.showError("Please Enter Your Name");
             } else {
-                // TODO: 5/28/2018  
+                // TODO: 5/28/2018
                 AppGUI.gameStage.setScene(new MainMenuScene());
             }
         };

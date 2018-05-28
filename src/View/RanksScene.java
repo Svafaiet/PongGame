@@ -54,11 +54,6 @@ public class RanksScene extends BarScene {
         getBar().getChildren().addAll(back);
         getBar().setAlignment(Pos.CENTER_LEFT);
 
-        back.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                AppGUI.gameStage.setScene(new MainMenuScene());
-            }
-        });
+        back.setOnMouseClicked(event -> AppGUI.gameStage.setScene(new MainMenuScene()));
     }
 }

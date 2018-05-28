@@ -11,6 +11,7 @@ public class Ball implements Serializable {
     public static final int INITIAL_HORIZONTAL_SPEED = 10;
     public static final int INITIAL_VERTICAL_SPEED = 0;
     public static final int DEFAULT_BALL_RADIUS = 7;
+    public static final double SPEED_ADD_RATE = 1;
 
     public Ball(BoardProperties boardProperties) {
         ballCircle = new BallCircle();
@@ -73,6 +74,7 @@ public class Ball implements Serializable {
     public void update() {
         ballCircle.setCenterX(ballCircle.getCenterX() + speed.getHorizontalSpeed());
         ballCircle.setCenterY(ballCircle.getCenterY() + speed.getVerticalSpeed());
+        speed.setSize(speed.getSize() + SPEED_ADD_RATE);
         if (hasBallChanged) {
             hasBallChanged = false;
             switch (ballType) {

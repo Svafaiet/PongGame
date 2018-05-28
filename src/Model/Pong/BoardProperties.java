@@ -6,8 +6,8 @@ public class BoardProperties implements Serializable {
     public static final BoardProperties DEFAULT_BOARD;
     static  {
         DEFAULT_BOARD = new BoardProperties();
-        DEFAULT_BOARD.width = 400;
-        DEFAULT_BOARD.height = 200;
+        DEFAULT_BOARD.width = 640;
+        DEFAULT_BOARD.height = 360;
     }
 
     private int width;
