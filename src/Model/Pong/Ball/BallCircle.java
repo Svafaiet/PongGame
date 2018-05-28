@@ -7,12 +7,13 @@ public class BallCircle implements Serializable {
     private double centerY;
     private double radius;
 
-    public void setCenterX(double x) {
-
-    }
 
     public double getCenterX() {
         return centerX;
+    }
+
+    public void setCenterX(double centerX) {
+        this.centerX = centerX;
     }
 
     public double getCenterY() {

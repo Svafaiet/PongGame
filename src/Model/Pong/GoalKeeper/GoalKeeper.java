@@ -2,29 +2,32 @@ package Model.Pong.GoalKeeper;
 
 import Model.Pong.Ball.Ball;
 import Model.Pong.Ball.Speed;
+import Model.Pong.BoardProperties;
 import Model.Pong.Location;
 import javafx.scene.shape.Rectangle;
 
 import java.io.Serializable;
 
 public class GoalKeeper implements Serializable {
-    public static final double DEFAULT_GOALKEEPER_HEIGHT = 30;
-    public static final double DEFAULT_GOALKEEPER_WIDTH = 8;
+    public static final double DEFAULT_GOALKEEPER_HEIGHT = 66;
+    public static final double DEFAULT_GOALKEEPER_WIDTH = 14;
     public static final GoalKeeperType DEFAULT_GOALKEEPER_TYPE = GoalKeeperType.CLASSIC;
 
     private GoalKeeperRectangle rectangle = new GoalKeeperRectangle();
     private GoalKeeperType goalKeeperType;
     private Side side;
 
-    public GoalKeeper(Side side) {
+    public GoalKeeper(Side side, BoardProperties boardProperties) {
         goalKeeperType = DEFAULT_GOALKEEPER_TYPE;
         rectangle.setHeight(DEFAULT_GOALKEEPER_HEIGHT);
+        rectangle.setWidth(DEFAULT_GOALKEEPER_WIDTH);
+        rectangle.setCenterY(boardProperties.getHeight()/2);
         switch (side) {
             case RIGHT:
-                rectangle.setWidth(DEFAULT_GOALKEEPER_WIDTH);
+                rectangle.setCenterX(boardProperties.getWidth() - rectangle.getWidth()/2);
                 break;
             case LEFT:
-                rectangle.setWidth(0);
+                rectangle.setCenterX(rectangle.getWidth()/2);
                 break;
         }
 

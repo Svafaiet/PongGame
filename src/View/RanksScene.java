@@ -2,13 +2,11 @@ package View;
 
 import Model.Profile;
 import View.utils.BarScene;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -16,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class RanksScene extends BarScene {
-    public static final double RANKS_MENU_WIDTH = AppGUI.gameStage.getWidth();
-    public static final double RANKS_MENU_HEIGHT = AppGUI.gameStage.getHeight();
+    public static final double RANKS_MENU_WIDTH = AppGUI.getGameStage().getWidth();
+    public static final double RANKS_MENU_HEIGHT = AppGUI.getGameStage().getHeight();
 
     public RanksScene(ArrayList<Profile> profiles){
         super(new Group(), RANKS_MENU_WIDTH, RANKS_MENU_HEIGHT, ConstantColors.BACK_GROUND_COLOR1);
@@ -54,6 +52,6 @@ public class RanksScene extends BarScene {
         getBar().getChildren().addAll(back);
         getBar().setAlignment(Pos.CENTER_LEFT);
 
-        back.setOnMouseClicked(event -> AppGUI.gameStage.setScene(new MainMenuScene()));
+        back.setOnMouseClicked(event -> AppGUI.setStageScene(new MainMenuScene()));
     }
 }

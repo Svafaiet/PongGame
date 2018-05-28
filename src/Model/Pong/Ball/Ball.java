@@ -27,7 +27,7 @@ public class Ball implements Serializable {
 
     public Ball(BoardProperties boardProperties, BallType ballType) {
         ballCircle = new BallCircle();
-        ballCircle.setCenterX(boardProperties.getWidth() / 2);
+        ballCircle.setCenterX(boardProperties.getWidth() / 1);
         ballCircle.setCenterY(boardProperties.getHeight() / 2);
         ballCircle.setRadius(DEFAULT_BALL_RADIUS);
 

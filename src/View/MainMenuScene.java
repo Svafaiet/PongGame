@@ -38,8 +38,8 @@ public class MainMenuScene extends BarScene {
         playButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                AppGUI.gameStage.setScene(new SelectGameMenu());
-                AppGUI.gameStage.show();
+                AppGUI.getGameStage().setScene(new SelectGameMenu());
+                AppGUI.getGameStage().show();
             }
         });
 
@@ -61,7 +61,7 @@ public class MainMenuScene extends BarScene {
         profiles.add(new Profile("Taghi"));
         profiles.get(0).setWinCount(1);
         profiles.get(1).setWinCount(1);
-        AppGUI.gameStage.setScene(new RanksScene(profiles));
+        AppGUI.getGameStage().setScene(new RanksScene(profiles));
     }
 
     public void setBar(){
@@ -73,7 +73,7 @@ public class MainMenuScene extends BarScene {
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                AppGUI.gameStage.setScene(new LoginScene());
+                AppGUI.getGameStage().setScene(new LoginScene());
             }
         });
     }

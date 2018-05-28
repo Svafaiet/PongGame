@@ -10,8 +10,8 @@ import Model.Pong.GoalKeeper.GoalKeeperType;
 import Model.Pong.GoalKeeper.Side;
 
 public class PongLogic extends GameLogic {
-    private static final int DEFAULT_GAME_WIDTH = 400;
-    private static final int DEFAULT_GAME_HEIGHT = 200;
+    public static final int DEFAULT_GAME_WIDTH = 640;
+    public static final int DEFAULT_GAME_HEIGHT = 360;
 
     private BoardProperties boardProperties;
     private GoalKeeper goalKeeper1;
@@ -24,8 +24,8 @@ public class PongLogic extends GameLogic {
 
         boardProperties = BoardProperties.DEFAULT_BOARD;
 
-        goalKeeper1 = new GoalKeeper(Side.LEFT);
-        goalKeeper2 = new GoalKeeper(Side.RIGHT);
+        goalKeeper1 = new GoalKeeper(Side.LEFT, boardProperties);
+        goalKeeper2 = new GoalKeeper(Side.RIGHT, boardProperties);
 
         ball = new Ball(boardProperties);
     }
@@ -35,9 +35,9 @@ public class PongLogic extends GameLogic {
 
         boardProperties = BoardProperties.DEFAULT_BOARD;
 
-        goalKeeper1 = new GoalKeeper(Side.LEFT);
+        goalKeeper1 = new GoalKeeper(Side.LEFT, boardProperties);
         goalKeeper1.changeGoalKeeper(goalKeeperType1);
-        goalKeeper2 = new GoalKeeper(Side.RIGHT);
+        goalKeeper2 = new GoalKeeper(Side.RIGHT,boardProperties);
         goalKeeper2.changeGoalKeeper(goalKeeperType2);
 
         ball = new Ball(boardProperties, ballType);

@@ -29,7 +29,7 @@ public class GoalKeeperRectangle implements Serializable {
     }
 
     public void setCenterX(double centerX) {
-        this.centerX = centerX;
+        this.centerX = centerX - width/2;
     }
 
     public double getCenterY() {
@@ -37,6 +37,6 @@ public class GoalKeeperRectangle implements Serializable {
     }
 
     public void setCenterY(double centerY) {
-        this.centerY = centerY;
+        this.centerY = centerY - height/2;
     }
 }

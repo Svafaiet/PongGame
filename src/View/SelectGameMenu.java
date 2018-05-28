@@ -12,8 +12,8 @@ import javafx.scene.layout.HBox;
 
 
 public class SelectGameMenu extends BarScene {
-    public static final double SELECT_MENU_WIDTH = AppGUI.gameStage.getWidth();
-    public static final double SELECT_MENU_HEIGHT = AppGUI.gameStage.getHeight();
+    public static final double SELECT_MENU_WIDTH = AppGUI.getGameStage().getWidth();
+    public static final double SELECT_MENU_HEIGHT = AppGUI.getGameStage().getHeight();
 
 
 
@@ -49,8 +49,8 @@ public class SelectGameMenu extends BarScene {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                AppGUI.gameStage.setScene(new MainMenuScene());
-                AppGUI.gameStage.show();
+                AppGUI.setStageScene(new MainMenuScene());
+                AppGUI.getGameStage().show();
             }
         });
     }
@@ -58,8 +58,8 @@ public class SelectGameMenu extends BarScene {
     private void chooseGame(GameType gameType) {
         switch (gameType) {
             case PONG:
-                AppGUI.gameStage.setScene(new PongMainMenuScene());
-                AppGUI.gameStage.show();
+                AppGUI.setStageScene(new PongMainMenuScene());
+                AppGUI.getGameStage().show();
                 break;
         }
     }

@@ -21,11 +21,11 @@ import javafx.scene.shape.Rectangle;
 public class PongMainMenuScene extends BarScene {
     public static double getMainMenuWidth(){
 //        AppGUI.gameStage.show();
-        return AppGUI.gameStage.getWidth();
+        return AppGUI.getGameStage().getWidth();
     }
     public static double getMainMenuHeight() {
 //        AppGUI.gameStage.show();
-        return AppGUI.gameStage.getHeight();
+        return AppGUI.getGameStage().getHeight();
     }
     private VBox options = new VBox(2);
 
@@ -87,7 +87,7 @@ public class PongMainMenuScene extends BarScene {
         });
 
         newGameButton.setOnMouseClicked(event -> {
-            AppGUI.gameStage.setScene(new PongScene(new PongLogic()));
+            // TODO: 5/28/2018  
         });
     }
 
@@ -157,7 +157,7 @@ public class PongMainMenuScene extends BarScene {
         firstElement.getChildren().addAll(label, close);
 
         vBox.getChildren().add(firstElement);
-        for(WaitingGame waitingGame : AppGUI.world.getWaitingGames()) {
+        for(WaitingGame waitingGame : AppGUI.getWorld().getWaitingGames()) {
             Button newGame = new Button(waitingGame.getSaveName() +
                     "(" + waitingGame.getProfiles().size() + "/" + waitingGame.getGameMaker().getPlayerCout()+ ")");
             newGame.setOnMouseClicked(event -> {
@@ -170,14 +170,14 @@ public class PongMainMenuScene extends BarScene {
         }
 
         vBox.setId("floatingMenu");
-        AppGUI.gameStage.show();
-        ((Group)AppGUI.gameStage.getScene().getRoot()).getChildren().addAll(container, vBox);
+        AppGUI.getGameStage().show();
+        ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().addAll(container, vBox);
         vBox.relocate((getMainMenuWidth() - vBox.getPrefWidth())/2,
                 (getMainMenuHeight() - vBox.getPrefHeight() - getMainMenuHeight()/5)/2);
 
         close.setOnMouseClicked(event -> {
-            ((Group) AppGUI.gameStage.getScene().getRoot()).getChildren().remove(vBox);
-            ((Group) AppGUI.gameStage.getScene().getRoot()).getChildren().remove(container);
+            ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().remove(vBox);
+            ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().remove(container);
         });
 
         container.setOnMouseClicked(close.getOnMouseClicked());
@@ -190,8 +190,8 @@ public class PongMainMenuScene extends BarScene {
         back.setPrefHeight(getMainMenuHeight()/10);
 
         back.setOnMouseClicked(event -> {
-            AppGUI.gameStage.setScene(new SelectGameMenu());
-            AppGUI.gameStage.show();
+           AppGUI.setStageScene(new SelectGameMenu());
+            AppGUI.getGameStage().show();
         });
     }
 }
