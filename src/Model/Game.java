@@ -7,9 +7,11 @@ import java.util.Objects;
 public class Game implements Serializable {
     private GameLogic gameLogic;
     private String saveName;
+    private GameMode gameMode;
 
-    public Game(GameMaker gameMaker, String saveName, ArrayList<Profile> profiles) {
+    public Game(GameMaker gameMaker, String saveName, GameMode gameMode, ArrayList<Profile> profiles) {
         ArrayList<Player> players = new ArrayList<>();
+        this.gameMode = gameMode;
         for(Profile profile : profiles) {
             players.add(gameMaker.makeNewPlayer(profile));
         }
@@ -37,4 +39,7 @@ public class Game implements Serializable {
         return saveName.equals(o); // TODO: 5/17/2018 ask
     }
 
+    public GameMode getGameMode() {
+        return gameMode;
+    }
 }

@@ -6,6 +6,7 @@ public class WaitingGame {
     private GameMaker gameMaker;
     private ArrayList<Profile> profiles = new ArrayList<>();
     private String saveName;
+    private GameMode gameMode;
 
     public GameMaker getGameMaker() {
         return gameMaker;
@@ -19,9 +20,10 @@ public class WaitingGame {
         return saveName;
     }
 
-    public WaitingGame(String saveName, GameMaker gameMaker){
+    public WaitingGame(String saveName, GameMode gameMode, GameMaker gameMaker){
         this.saveName = saveName;
         this.gameMaker = gameMaker;
+        this.gameMode = gameMode;
     }
 
     public void addProfile(Profile profile) {
@@ -35,6 +37,6 @@ public class WaitingGame {
     }
 
     public Game makeGame(){
-        return new Game(gameMaker, saveName, profiles);
+        return new Game(gameMaker, saveName, gameMode, profiles);
     }
 }

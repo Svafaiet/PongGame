@@ -1,6 +1,9 @@
 package View.PongGUI;
 
+import Controller.Packets.ServerPacket;
+import Controller.Packets.ServerPacketType;
 import Model.Game;
+import Model.GameMode;
 import Model.Pong.Ball.Ball;
 import Model.Pong.GoalKeeper.GoalKeeper;
 import Model.Pong.PongLogic;
@@ -36,7 +39,7 @@ public class PongScene extends BarScene {
     private static double xMultiplier = 1;
     private static double yMultiplier = 1;
 
-    private final PongLogic pongLogic;
+    private final Game pongGame;
 
     //mainPart
     private Rectangle goalKeeper1 = new Rectangle();
@@ -49,12 +52,11 @@ public class PongScene extends BarScene {
     private Text score2 = new Text("0");
 
     private Set<KeyCode> pressedKeys;
-    private Map<KeyCode, Boolean> typingKeys;
     private Map<KeyCode, String> keyMeaning;
 
     public PongScene(Game game) {
         super(new Group(), PONG_WIDTH + 2 * BORDER_SIZE, PONG_HEIGHT + BAR_HEIGHT + 2 * BORDER_SIZE, Color.BLACK);
-        this.pongLogic = (PongLogic) game.getGameLogic();
+        this.pongGame = game;
         Group root = getMainPart();
         setBar();
         root.getChildren().add(new Rectangle(PONG_WIDTH + 2 * BORDER_SIZE, PONG_HEIGHT + 2 * BORDER_SIZE));
@@ -64,17 +66,17 @@ public class PongScene extends BarScene {
             @Override
             public void handle(long now) {
                 //Drawing GoalKeepers
-                drawGoalKeeper(pongLogic.getGoalKeeper1(), goalKeeper1);
-                drawGoalKeeper(pongLogic.getGoalKeeper2(), goalKeeper2);
+                drawGoalKeeper(getPongLogic().getGoalKeeper1(), goalKeeper1);
+                drawGoalKeeper(getPongLogic().getGoalKeeper2(), goalKeeper2);
 
                 //Drawing Ball
-                drawBall(pongLogic.getBall());
+                drawBall(getPongLogic().getBall());
 
                 drawInformation();
 
                 handleKeys();
 
-                if (pongLogic.isGameFinished()) {
+                if (getPongLogic().isGameFinished()) {
                     stop();
                     AppGUI.setStageScene(new PongMainMenuScene());
                     AppGUI.getGameStage().show();
@@ -84,6 +86,10 @@ public class PongScene extends BarScene {
         };
         animationTimer.start();
         root.getChildren().addAll(ball, goalKeeper1, goalKeeper2);
+    }
+
+    private PongLogic getPongLogic() {
+        return (PongLogic) pongGame.getGameLogic();
     }
 
     public void setBar() {
@@ -121,11 +127,17 @@ public class PongScene extends BarScene {
         });
 
         keyMeaning = new HashMap<>();
-        keyMeaning.put(KeyCode.P, "PAUSE");
-        keyMeaning.put(KeyCode.UP, "UP_GOALKEEPER2");
-        keyMeaning.put(KeyCode.DOWN, "DOWN_GOALKEEPER2");
-        keyMeaning.put(KeyCode.W, "UP_GOALKEEPER1");
-        keyMeaning.put(KeyCode.S, "DOWN_GOALKEEPER1");
+        if(pongGame.getGameMode().equals(GameMode.SINGLE_PLAYER)) {
+            keyMeaning.put(KeyCode.P, "PAUSE");
+            keyMeaning.put(KeyCode.UP, "UP_GOALKEEPER2");
+            keyMeaning.put(KeyCode.DOWN, "DOWN_GOALKEEPER2");
+            keyMeaning.put(KeyCode.W, "UP_GOALKEEPER1");
+            keyMeaning.put(KeyCode.S, "DOWN_GOALKEEPER1");
+        } else {
+            keyMeaning.put(KeyCode.P, "PAUSE_MULTI_PLAYER");
+            keyMeaning.put(KeyCode.UP, "UP_GOALKEEPER_MULTI_PLAYER");
+            keyMeaning.put(KeyCode.DOWN, "DOWN_GOALKEEPER_MULTI_PLAYER");
+        }
 
 
     }
@@ -141,20 +153,30 @@ public class PongScene extends BarScene {
         if (keyMeaning.keySet().contains(keyCode)) {
             switch (keyMeaning.get(keyCode)) {
                 case "PAUSE":
-                    pongLogic.pauseOrResume();
+                    getPongLogic().pauseOrResume();
                     break;
                 case "UP_GOALKEEPER1":
-                    pongLogic.moveGoalKeeperUp(1);
+                    getPongLogic().moveGoalKeeperUp(1);
                     break;
                 case "DOWN_GOALKEEPER1":
-                    pongLogic.moveGoalKeeperDown(1);
+                    getPongLogic().moveGoalKeeperDown(1);
                     break;
                 case "UP_GOALKEEPER2":
-                    pongLogic.moveGoalKeeperUp(2);
+                    getPongLogic().moveGoalKeeperUp(2);
                     break;
                 case "DOWN_GOALKEEPER2":
-                    pongLogic.moveGoalKeeperDown(2);
+                    getPongLogic().moveGoalKeeperDown(2);
                     break;
+                case "PAUSE_MULTI_PLAYER":
+                    AppGUI.sendPacket(ServerPacketType.PONG_ACTION, "PAUSE");
+                    break;
+                case "UP_GOALKEEPER_MULTI_PLAYER":
+                    AppGUI.sendPacket(ServerPacketType.PONG_ACTION, "UP");
+                    break;
+                case "DOWN_GOALKEEPER_MULTI_PLAYER":
+                    AppGUI.sendPacket(ServerPacketType.PONG_ACTION, "DOWN");
+                    break;
+
 
             }
         }
@@ -208,11 +230,11 @@ public class PongScene extends BarScene {
     }
 
     private void drawInformation() {
-        score1.setText("" + ((PongPlayer) pongLogic.getPlayers().get(0)).getScore());
-        score2.setText("" + ((PongPlayer) pongLogic.getPlayers().get(1)).getScore());
+        score1.setText("" + ((PongPlayer) getPongLogic().getPlayers().get(0)).getScore());
+        score2.setText("" + ((PongPlayer) getPongLogic().getPlayers().get(1)).getScore());
         // FIXME: 5/29/2018 singlePlayer only
-        long time = pongLogic.getTime();
-        chronometer.setText(String.format("%d:%02d:%02d", (time/60000), ((time/1000)%100), (time/10)%100));
+        long time = getPongLogic().getTime();
+        chronometer.setText(String.format("%d:%02d:%02d", (time/60000), ((time/1000)%60), (time/10)%100));
     }
 
     private double castLogicalXToGraphical(double x) {

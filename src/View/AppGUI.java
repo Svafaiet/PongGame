@@ -1,6 +1,7 @@
 package View;
 
 import Controller.ClientController;
+import Controller.Packets.ServerPacketType;
 import Model.Player;
 import Model.Pong.PongLogic;
 import Model.Pong.PongMaker;
@@ -44,6 +45,10 @@ public final class AppGUI extends Application {
 
     public static Socket getClient() {
         return client;
+    }
+
+    public static void sendPacket(ServerPacketType pongAction, String pause) {
+
     }
 
     @Override

@@ -6,6 +6,7 @@ import Controller.utils.ServerPackageListener;
 import Model.Exceptions.DuplicateGameException;
 import Model.Exceptions.DuplicatePlayerNameException;
 import Model.Exceptions.PlayerNotFoundException;
+import Model.GameMode;
 import Model.GameType;
 import Model.Profile;
 import Model.World;
@@ -112,7 +113,7 @@ public class MainServer implements ServerPackageListener {
                 break;
             case START:
                 try {
-                    world.makeNewGame(serverPacket.getFromMassage(), serverPacket.getSecondArgument(), GameType.valueOf(serverPacket.getFirstArgument()));
+                    world.makeNewGame(serverPacket.getFromMassage(), serverPacket.getSecondArgument(), GameMode.MULTI_PLAYER, GameType.valueOf(serverPacket.getFirstArgument()));
                 } catch (PlayerNotFoundException e) {
                     e.printStackTrace();
                 } catch (DuplicateGameException e) {

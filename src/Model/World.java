@@ -73,13 +73,13 @@ public class World {
         profiles.add(new Profile(playerName));
     }
 
-    public void makeNewGame(String player1Name, String saveName, GameType gameType)
+    public void makeNewGame(String player1Name, String saveName, GameMode gameMode, GameType gameType)
             throws PlayerNotFoundException , DuplicateGameException {
         if(hasGame(saveName)) {
             throw new DuplicateGameException();
         }
         Profile creator = getProfile(player1Name);
-        WaitingGame wg = new WaitingGame(saveName, gameMakers.get(gameType)) ;
+        WaitingGame wg = new WaitingGame(saveName, gameMode, gameMakers.get(gameType)) ;
         wg.addProfile(creator);
         if (wg.isFull()) {
             runningGames.add(wg.makeGame());

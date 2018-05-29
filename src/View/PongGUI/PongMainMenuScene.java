@@ -4,6 +4,7 @@ import Model.Exceptions.DuplicateGameException;
 import Model.Exceptions.DuplicatePlayerNameException;
 import Model.Exceptions.PlayerNotFoundException;
 import Model.Game;
+import Model.GameMode;
 import Model.GameType;
 import Model.Pong.PongLogic;
 import Model.WaitingGame;
@@ -130,7 +131,7 @@ public class PongMainMenuScene extends BarScene {
         start.setStyle("-fx-min-height: 20");
         start.setOnMouseClicked(event -> {
             try {
-                AppGUI.getWorld().makeNewGame(AppGUI.getClientName(), gameNameField.getText(), GameType.PONG);
+                AppGUI.getWorld().makeNewGame(AppGUI.getClientName(), gameNameField.getText(), GameMode.SINGLE_PLAYER, GameType.PONG);
 
                 if (!AppGUI.getWorld().hasProfile(secondPlayerField.getText())) {
                     AppGUI.getWorld().addNewProfile(secondPlayerField.getText());
