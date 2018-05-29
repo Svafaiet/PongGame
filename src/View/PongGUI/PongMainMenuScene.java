@@ -14,6 +14,7 @@ import View.utils.BarScene;
 import View.utils.ErrorText;
 import View.utils.PreWrittenTextField;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -21,6 +22,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -107,19 +110,24 @@ public class PongMainMenuScene extends BarScene {
 
         HBox firstElement = new HBox(60);
         firstElement.setAlignment(Pos.CENTER);
+        firstElement.setPadding(new Insets(0, 15, 0, 15));
 
         HBox secondElement = new HBox(20);
-        secondElement.setAlignment(Pos.CENTER_LEFT);
+        secondElement.setAlignment(Pos.CENTER);
+        secondElement.setPadding(new Insets(10, 0, 20, 0));
 
         Button close = new Button("X");
+        Region fillerRegion = new Region();
+        HBox.setHgrow(fillerRegion, Priority.ALWAYS);
         close.setId("closeButton");
         Label label = new Label("Make newGame");
         label.setStyle("-fx-text-fill: #76c7d3");
-        firstElement.getChildren().addAll(label, close);
+        firstElement.getChildren().addAll(label, fillerRegion, close);
 
         TextField gameNameField = new PreWrittenTextField("Game Name");
         TextField secondPlayerField = new PreWrittenTextField("Second Player");
         Button start = new Button("Start!");
+        start.setStyle("-fx-min-height: 20");
         start.setOnMouseClicked(event -> {
             try {
                 AppGUI.getWorld().makeNewGame(AppGUI.getClientName(), gameNameField.getText(), GameType.PONG);
@@ -218,7 +226,18 @@ public class PongMainMenuScene extends BarScene {
             vBox.getChildren().addAll(new Label("no game found"));
         }
 
+        vBox.setId("floatingMenu");
+        AppGUI.getGameStage().show();
+        ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().addAll(container, vBox);
+        vBox.relocate((getMainMenuWidth() - vBox.getPrefWidth())/2,
+                (getMainMenuHeight() - vBox.getPrefHeight() - getMainMenuHeight()/5)/2);
 
+        close.setOnMouseClicked(event -> {
+            ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().remove(vBox);
+            ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().remove(container);
+        });
+
+        container.setOnMouseClicked(close.getOnMouseClicked());
     }
 
     public void setBar(){

@@ -18,11 +18,16 @@ public class PongLogic extends GameLogic {
     public static final int WIN_SCORE = 5;
     public static final int DEFAULT_GAME_WIDTH = 640;
     public static final int DEFAULT_GAME_HEIGHT = 360;
+    public static final int UPDATE_PERIOD = 20;
 
     private BoardProperties boardProperties;
     private GoalKeeper goalKeeper1;
     private GoalKeeper goalKeeper2;
     private Ball ball;
+    private long time = 0;
+
+    private boolean isPaused = false;
+    private long lastTimePaused = 0;
 
     Timer timer = new Timer();
 
@@ -36,7 +41,7 @@ public class PongLogic extends GameLogic {
             public void run() {
                 update();
             }
-        }, 0, 20);
+        }, 0, UPDATE_PERIOD);
     }
 
     public void setupGame() {
@@ -55,7 +60,7 @@ public class PongLogic extends GameLogic {
 
         goalKeeper1 = new GoalKeeper(Side.LEFT, boardProperties);
         goalKeeper1.changeGoalKeeper(goalKeeperType1);
-        goalKeeper2 = new GoalKeeper(Side.RIGHT,boardProperties);
+        goalKeeper2 = new GoalKeeper(Side.RIGHT, boardProperties);
         goalKeeper2.changeGoalKeeper(goalKeeperType2);
 
         ball = new Ball(boardProperties, ballType);
@@ -77,37 +82,46 @@ public class PongLogic extends GameLogic {
         return ball;
     }
 
+    public long getTime() {
+        return time;
+    }
+
     public void update() {
-        reflectBall();
-        ball.update();
-        if(ball.isOutOfBoard(boardProperties)) {
-            if(ball.getBallCircle().getCenterX() < 0) {
-                ((PongPlayer) getPlayers().get(0)).addScore();
-            } else {
-                ((PongPlayer) getPlayers().get(1)).addScore();
+        if (!isPaused) {
+            reflectBall();
+            ball.update();
+            if (ball.isOutOfBoard(boardProperties)) {
+                if (ball.getBallCircle().getCenterX() < 0) {
+                    ((PongPlayer) getPlayers().get(0)).addScore();
+                } else {
+                    ((PongPlayer) getPlayers().get(1)).addScore();
+                }
+                if (isGameFinished()) {
+                    whoIsWinner().win();
+                    timer.cancel();
+                }
+                setupGame();
             }
-            if(isGameFinished()) {
-                whoIsWinner().win();
-                timer.cancel();
-            }
-            setupGame();
+            time += UPDATE_PERIOD;
+
         }
+
     }
 
     public boolean isGameFinished() {
-        for(Player player : getPlayers()) {
+        for (Player player : getPlayers()) {
             PongPlayer pongPlayer = (PongPlayer) player;
-            if(pongPlayer.getScore() >= WIN_SCORE) {
+            if (pongPlayer.getScore() >= WIN_SCORE) {
                 return true;
             }
         }
         return false;
     }
 
-    private Player whoIsWinner(){
-        for(Player player : getPlayers()) {
+    private Player whoIsWinner() {
+        for (Player player : getPlayers()) {
             PongPlayer pongPlayer = (PongPlayer) player;
-            if(pongPlayer.getScore() >= WIN_SCORE) {
+            if (pongPlayer.getScore() >= WIN_SCORE) {
                 return player;
             }
         }
@@ -127,18 +141,28 @@ public class PongLogic extends GameLogic {
     }
 
     public void moveGoalKeeperUp(int goalKeeperNumber) {
-        if(goalKeeperNumber == 1) {
-            goalKeeper1.moveUp(boardProperties);
-        } else {
-            goalKeeper2.moveUp(boardProperties);
-        }
+        if (!isPaused)
+            if (goalKeeperNumber == 1) {
+                goalKeeper1.moveUp(boardProperties);
+            } else {
+                goalKeeper2.moveUp(boardProperties);
+            }
     }
 
     public void moveGoalKeeperDown(int goalKeeperNumber) {
-        if(goalKeeperNumber == 1) {
-            goalKeeper1.moveDown(boardProperties);
-        } else {
-            goalKeeper2.moveDown(boardProperties);
+        if (!isPaused)
+            if (goalKeeperNumber == 1) {
+                goalKeeper1.moveDown(boardProperties);
+            } else {
+                goalKeeper2.moveDown(boardProperties);
+            }
+    }
+
+    public void pauseOrResume() {
+        if(System.currentTimeMillis() > lastTimePaused + 300) {
+            isPaused = !isPaused;
+            lastTimePaused  = System.currentTimeMillis();
         }
+
     }
 }

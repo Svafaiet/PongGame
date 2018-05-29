@@ -8,10 +8,12 @@ import Model.Pong.PongPlayer;
 import View.AppGUI;
 import View.utils.BarScene;
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -46,7 +48,8 @@ public class PongScene extends BarScene {
     private Text score1 = new Text("0");
     private Text score2 = new Text("0");
 
-    private Set<KeyCode> activeKeys;
+    private Set<KeyCode> pressedKeys;
+    private Map<KeyCode, Boolean> typingKeys;
     private Map<KeyCode, String> keyMeaning;
 
     public PongScene(Game game) {
@@ -72,8 +75,9 @@ public class PongScene extends BarScene {
                 handleKeys();
 
                 if (pongLogic.isGameFinished()) {
-                    AppGUI.setStageScene(new PongMainMenuScene());
                     stop();
+                    AppGUI.setStageScene(new PongMainMenuScene());
+                    AppGUI.getGameStage().show();
                 }
 
             }
@@ -87,7 +91,7 @@ public class PongScene extends BarScene {
         getBar().setMaxWidth(PONG_WIDTH + 2 * BORDER_SIZE);
         getBar().setStyle("-fx-border-color: white;");
         getBar().setAlignment(Pos.CENTER);
-        getBar().setPadding(new Insets(0, 0, BORDER_SIZE, 0));
+        getBar().setPadding(new Insets(0, 15, BORDER_SIZE, 15));
         score1.setFill(Color.color((double) 0x19 / 256, (double) 0xfb / 256, (double) 0xff / 256));
         score2.setFill(Color.RED);
         chronometer.setFill(Color.WHITE);
@@ -104,9 +108,17 @@ public class PongScene extends BarScene {
     }
 
     private void setupKeyEvents() {
-        activeKeys = new HashSet<>();
-        this.setOnKeyPressed(event -> activeKeys.add(event.getCode()));
-        this.setOnKeyReleased(event -> activeKeys.remove(event.getCode()));
+        pressedKeys = new HashSet<>();
+        this.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                pressedKeys.add(event.getCode());
+            }
+        });
+
+        this.setOnKeyReleased(event -> {
+            pressedKeys.remove(event.getCode());
+        });
 
         keyMeaning = new HashMap<>();
         keyMeaning.put(KeyCode.P, "PAUSE");
@@ -119,7 +131,7 @@ public class PongScene extends BarScene {
     }
 
     private void handleKeys() {
-        for (KeyCode keyCode : activeKeys) {
+        for (KeyCode keyCode : pressedKeys) {
             sendCommand(keyCode);
         }
     }
@@ -129,7 +141,7 @@ public class PongScene extends BarScene {
         if (keyMeaning.keySet().contains(keyCode)) {
             switch (keyMeaning.get(keyCode)) {
                 case "PAUSE":
-                    // TODO: 5/29/2018
+                    pongLogic.pauseOrResume();
                     break;
                 case "UP_GOALKEEPER1":
                     pongLogic.moveGoalKeeperUp(1);
@@ -198,7 +210,9 @@ public class PongScene extends BarScene {
     private void drawInformation() {
         score1.setText("" + ((PongPlayer) pongLogic.getPlayers().get(0)).getScore());
         score2.setText("" + ((PongPlayer) pongLogic.getPlayers().get(1)).getScore());
-        // TODO: 5/28/2018  
+        // FIXME: 5/29/2018 singlePlayer only
+        long time = pongLogic.getTime();
+        chronometer.setText(String.format("%d:%02d:%02d", (time/60000), ((time/1000)%100), (time/10)%100));
     }
 
     private double castLogicalXToGraphical(double x) {

@@ -3,6 +3,8 @@
     -fx-border-color: #336c81;
     -fx-min-height: 50;
     -fx-text-fill: #76c7d3;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
 }
 
 .button:hover {

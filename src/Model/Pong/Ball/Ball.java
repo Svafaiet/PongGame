@@ -14,9 +14,9 @@ public class Ball implements Serializable {
     public final double INITIAL_VERTICAL_DIR;
     public final double INITIAL_SPEED_SIZE = 3;
     {
-        double randomAngle = random()%(PI) - PI/2;
-        INITIAL_HORIZONTAL_DIR = sin(randomAngle);
-        INITIAL_VERTICAL_DIR = cos(randomAngle);
+        double randomAngle = random()%(PI/3) * (2*(random()%2)-1) ;
+        INITIAL_HORIZONTAL_DIR = cos(randomAngle);
+        INITIAL_VERTICAL_DIR = sin(randomAngle);
     }
 
     public static final int DEFAULT_BALL_RADIUS = 7;
