@@ -59,7 +59,7 @@ public class MainMenuScene extends BarScene {
     }
 
     public void setBar(){
-        Button back = new Button("back");
+        Button back = new Button("Log out");
         back.setPrefWidth(MAIN_MENU_WIDTH/10);
         getBar().getChildren().addAll(back);
         getBar().setAlignment(Pos.CENTER_LEFT);

@@ -22,4 +22,6 @@ public abstract class GameLogic implements Serializable {
     public void setGameType(GameType gameType) {
         this.gameType = gameType;
     }
+
+    public abstract boolean isGameFinished();
 }

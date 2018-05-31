@@ -18,7 +18,7 @@ public class PongLogic extends GameLogic {
     public static final int WIN_SCORE = 5;
     public static final int DEFAULT_GAME_WIDTH = 640;
     public static final int DEFAULT_GAME_HEIGHT = 360;
-    public static final int UPDATE_PERIOD = 20;
+    public static final int UPDATE_PERIOD = 3;
 
     private BoardProperties boardProperties;
     private GoalKeeper goalKeeper1;
@@ -92,9 +92,9 @@ public class PongLogic extends GameLogic {
             ball.update();
             if (ball.isOutOfBoard(boardProperties)) {
                 if (ball.getBallCircle().getCenterX() < 0) {
-                    ((PongPlayer) getPlayers().get(0)).addScore();
-                } else {
                     ((PongPlayer) getPlayers().get(1)).addScore();
+                } else {
+                    ((PongPlayer) getPlayers().get(0)).addScore();
                 }
                 if (isGameFinished()) {
                     whoIsWinner().win();

@@ -6,9 +6,7 @@ import Model.Exceptions.GameNotFoundException;
 import Model.Exceptions.PlayerNotFoundException;
 import Model.Pong.PongMaker;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class World {
     private ArrayList<Profile> profiles = new ArrayList<>();
@@ -19,6 +17,19 @@ public class World {
     public Map<GameType, GameMaker> gameMakers = new HashMap<>();
     {
         gameMakers.put(GameType.PONG, new PongMaker());
+        Timer timer = new Timer(true);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                for(Iterator it = runningGames.iterator(); it.hasNext();) {
+                    Game game = (Game) it.next();
+                    if(game.getGameLogic().isGameFinished()) {
+                        it.remove();
+                    }
+                }
+            }
+        }, 0, 2000);
+
     }
 
     //Accessing

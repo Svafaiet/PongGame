@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Profile implements Serializable, Comparable<Profile> {
     private String name;
     private int winCount;
+    private boolean isOnline;
 
     public Profile(String name) {
         this.name = name;
@@ -25,6 +26,14 @@ public class Profile implements Serializable, Comparable<Profile> {
 
     public void setWinCount(int winCount) {
         this.winCount = winCount;
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
     }
 
     @Override

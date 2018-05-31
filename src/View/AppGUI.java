@@ -1,26 +1,17 @@
 package View;
 
 import Controller.ClientController;
+import Controller.Packets.ServerPacket;
 import Controller.Packets.ServerPacketType;
-import Model.Player;
-import Model.Pong.PongLogic;
-import Model.Pong.PongMaker;
-import Model.Pong.PongPlayer;
-import Model.Profile;
 import Model.World;
-import View.PongGUI.PongScene;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import sun.plugin.services.WPlatformService;
 
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public final class AppGUI extends Application {
 
@@ -47,8 +38,10 @@ public final class AppGUI extends Application {
         return client;
     }
 
-    public static void sendPacket(ServerPacketType pongAction, String pause) {
-
+    public static void sendPacket(ServerPacketType serverPacketType, String... packetElements) {
+        ServerPacket serverPacket = new ServerPacket(ClientController.Instance.getClientName());
+        serverPacket.setPacketType(serverPacketType);
+        serverPacket.addElements(packetElements);
     }
 
     @Override

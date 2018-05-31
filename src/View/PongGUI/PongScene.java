@@ -25,10 +25,7 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class PongScene extends BarScene {
@@ -54,6 +51,8 @@ public class PongScene extends BarScene {
     private Set<KeyCode> pressedKeys;
     private Map<KeyCode, String> keyMeaning;
 
+    ArrayList<AnimationTimer> animationTimers = new ArrayList<>();
+
     public PongScene(Game game) {
         super(new Group(), PONG_WIDTH + 2 * BORDER_SIZE, PONG_HEIGHT + BAR_HEIGHT + 2 * BORDER_SIZE, Color.BLACK);
         this.pongGame = game;
@@ -62,30 +61,59 @@ public class PongScene extends BarScene {
         root.getChildren().add(new Rectangle(PONG_WIDTH + 2 * BORDER_SIZE, PONG_HEIGHT + 2 * BORDER_SIZE));
 
         setupKeyEvents();
-        AnimationTimer animationTimer = new AnimationTimer() {
+        handleAnimationTimers();
+        root.getChildren().addAll(ball, goalKeeper1, goalKeeper2);
+    }
+
+    private void handleAnimationTimers() {
+        AnimationTimer ballTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                drawBall(getPongLogic().getBall());
+            }
+        };
+        AnimationTimer goalKeeperTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 //Drawing GoalKeepers
                 drawGoalKeeper(getPongLogic().getGoalKeeper1(), goalKeeper1);
                 drawGoalKeeper(getPongLogic().getGoalKeeper2(), goalKeeper2);
-
-                //Drawing Ball
-                drawBall(getPongLogic().getBall());
-
+            }
+        };
+        AnimationTimer informationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
                 drawInformation();
 
-                handleKeys();
-
                 if (getPongLogic().isGameFinished()) {
-                    stop();
+                    stopAnimationTimers();
                     AppGUI.setStageScene(new PongMainMenuScene());
                     AppGUI.getGameStage().show();
                 }
 
             }
         };
-        animationTimer.start();
-        root.getChildren().addAll(ball, goalKeeper1, goalKeeper2);
+        AnimationTimer keyTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                handleKeys();
+            }
+        };
+        animationTimers.add(ballTimer);
+        animationTimers.add(goalKeeperTimer);
+        animationTimers.add(informationTimer);
+        animationTimers.add(keyTimer);
+        resumeAnimationTimers();
+    }
+    private void stopAnimationTimers(){
+        for(AnimationTimer animationTimer : animationTimers) {
+            animationTimer.stop();
+        }
+    }
+    private void resumeAnimationTimers(){
+        for(AnimationTimer animationTimer : animationTimers) {
+            animationTimer.start();
+        }
     }
 
     private PongLogic getPongLogic() {

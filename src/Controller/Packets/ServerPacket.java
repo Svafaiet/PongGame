@@ -3,7 +3,7 @@ package Controller.Packets;
 
 /*
  * serverPacket :
- * ADD_PROFILE profileName
+ * SIGN_UP profileName
  * START gameType gameName
  * JOIN gameName
  * PONG_ACTION [UP|DOWN]
@@ -11,10 +11,11 @@ package Controller.Packets;
  * GET_PROFILES
  */
 
+import java.util.Arrays;
+
 public class ServerPacket {
     private ServerPacketType packetType;
-    private String firstArgument;
-    private String secondArgument;
+    private String[] arguments = new String[0];
     private String fromMassage;
 
     public ServerPacket() {
@@ -24,35 +25,26 @@ public class ServerPacket {
         this.fromMassage = fromMassage;
     }
 
-    public String getSecondArgument() {
-        return secondArgument;
-    }
-
-    public void setSecondArgument(String secondArgument) {
-        this.secondArgument = secondArgument;
-    }
-
     public String getFromMassage() {
         return fromMassage;
-    }
-
-    public void setFromMassage(String fromMassage) {
-        this.fromMassage = fromMassage;
     }
 
     public ServerPacketType getPacketType() {
         return packetType;
     }
 
+    public void addElements(String... newArguments) {
+        String[] newArgs = new String[arguments.length + newArguments.length];
+        System.arraycopy(arguments, 0, newArgs, 0, arguments.length);
+        System.arraycopy(newArguments, 0, newArgs, arguments.length, newArguments.length);
+        arguments = newArgs;
+    }
+
     public void setPacketType(ServerPacketType packetType) {
         this.packetType = packetType;
     }
 
-    public String getFirstArgument() {
-        return firstArgument;
-    }
-
-    public void setFirstArgument(String firstArgument) {
-        this.firstArgument = firstArgument;
+    public String getArgument(int i) {
+        return arguments[i];
     }
 }

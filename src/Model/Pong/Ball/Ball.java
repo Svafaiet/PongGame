@@ -12,7 +12,8 @@ import static java.lang.Math.*;
 public class Ball implements Serializable {
     public final double INITIAL_HORIZONTAL_DIR;
     public final double INITIAL_VERTICAL_DIR;
-    public final double INITIAL_SPEED_SIZE = 3;
+    public final double INITIAL_SPEED_SIZE = 0.6;
+    public final double MAX_SPEED = 6;
     {
         double randomAngle = random()%(PI/3) * (2*(random()%2)-1) ;
         INITIAL_HORIZONTAL_DIR = cos(randomAngle);
@@ -20,7 +21,7 @@ public class Ball implements Serializable {
     }
 
     public static final int DEFAULT_BALL_RADIUS = 7;
-    public static final double SPEED_ADD_RATE = 0.005;
+    public static final double SPEED_ADD_RATE = 0.001;
 
     public Ball(BoardProperties boardProperties) {
         ballCircle = new BallCircle();
@@ -83,7 +84,7 @@ public class Ball implements Serializable {
     public void update() {
         ballCircle.setCenterX(ballCircle.getCenterX() + speed.getHorizontalSpeed());
         ballCircle.setCenterY(ballCircle.getCenterY() + speed.getVerticalSpeed());
-        speed.setSize(speed.getSize() + SPEED_ADD_RATE);
+        speed.setSize(min(speed.getSize() + SPEED_ADD_RATE, MAX_SPEED));
         if (hasBallChanged) {
             hasBallChanged = false;
             switch (ballType) {
