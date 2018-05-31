@@ -1,6 +1,6 @@
 package View;
 
-import Controller.ClientController;
+import Controller.Client;
 import Model.Exceptions.DuplicatePlayerNameException;
 import View.utils.ErrorText;
 import javafx.event.EventHandler;
@@ -51,7 +51,7 @@ public class LoginScene extends Scene {
                     } catch (DuplicatePlayerNameException e) {
                         e.printStackTrace();
                     }
-                    ClientController.Instance.setClientName(profileName);
+                    Client.getInstance().setClientName(profileName);
                 }
                 AppGUI.setStageScene(new MainMenuScene());
             }

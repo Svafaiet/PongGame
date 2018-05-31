@@ -4,14 +4,17 @@ import Model.World;
 import View.AppGUI;
 import javafx.application.Application;
 
-public class ClientController {
-    public static final ClientController Instance = new ClientController();
+public class Client {
+    private static final Client Instance = new Client();
     private String clientName;
-    private World mainServerWorld;
     private World world;
 
-    private ClientController(){
+    private Client(){
         world = new World();
+    }
+
+    public static Client getInstance() {
+        return Instance;
     }
 
     public static void main(String[] args) {
@@ -29,9 +32,5 @@ public class ClientController {
 
     public void setClientName(String clientName) {
         this.clientName = clientName;
-    }
-
-    public World getMainServerWorld() {
-        return mainServerWorld;
     }
 }

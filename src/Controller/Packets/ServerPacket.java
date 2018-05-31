@@ -6,7 +6,7 @@ package Controller.Packets;
  * SIGN_UP profileName
  * START gameType gameName
  * JOIN gameName
- * PONG_ACTION [UP|DOWN]
+ * GAME_ACTION [UP|DOWN]
  * GET_AVAILABLE_GAMES
  * GET_PROFILES
  */
@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 public class ServerPacket {
     private ServerPacketType packetType;
-    private String[] arguments = new String[0];
+    private Object[] arguments = new Object[0];
     private String fromMassage;
 
     public ServerPacket() {
@@ -34,7 +34,7 @@ public class ServerPacket {
     }
 
     public void addElements(String... newArguments) {
-        String[] newArgs = new String[arguments.length + newArguments.length];
+        Object[] newArgs = new Object[arguments.length + newArguments.length];
         System.arraycopy(arguments, 0, newArgs, 0, arguments.length);
         System.arraycopy(newArguments, 0, newArgs, arguments.length, newArguments.length);
         arguments = newArgs;
@@ -44,7 +44,7 @@ public class ServerPacket {
         this.packetType = packetType;
     }
 
-    public String getArgument(int i) {
+    public Object getArgument(int i) {
         return arguments[i];
     }
 }

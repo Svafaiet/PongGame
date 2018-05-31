@@ -1,6 +1,7 @@
 package Controller.MainServer;
 
 import Controller.Packets.ServerPacket;
+import Controller.Server;
 import Controller.utils.ConnectionManager;
 import Controller.utils.ServerPackageListener;
 import Model.Exceptions.DuplicateGameException;
@@ -16,24 +17,18 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MainServer{
+public class MainServer extends Server {
     private static MainServer instance = new MainServer(ConnectionManager.MAIN_SERVER_PORT);
-    private int port;
-    private ServerSocket serverSocket;
-    private Set<ClientHandler> clientHandlers;
-    private World world = new World();
 
     private MainServer(int port) {
-        this.port = port;
+        super(port);
     }
 
     public static MainServer getInstance() {
         return instance;
     }
 
-    public World getWorld() {
-        return world;
-    }
+
 
     public static void main(String[] args) throws IOException {
         MainServer mainServer = getInstance();
@@ -57,13 +52,12 @@ public class MainServer{
 
     private void listenToClients() throws IOException {
         new Thread(() -> {
-            clientHandlers = new HashSet<>();
             while (true) {
                 try {
-                    Socket socket = serverSocket.accept();
+                    Socket socket = getServerSocket().accept();
                     ClientHandler clientHandler = new ClientHandler();
-                    clientHandlers.add(clientHandler);
-                    clientHandler.handleSocket(world, socket);
+                    getClientHandlers().add(clientHandler);
+                    clientHandler.handleSocket(this, socket);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -73,7 +67,7 @@ public class MainServer{
     }
 
     private void setup() throws IOException {
-        serverSocket = new ServerSocket(port);
+        setServerSocket(new ServerSocket(getPort()));
         System.err.println("ServerStarted");
     }
 

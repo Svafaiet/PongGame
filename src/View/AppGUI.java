@@ -1,6 +1,6 @@
 package View;
 
-import Controller.ClientController;
+import Controller.Client;
 import Controller.Packets.ServerPacket;
 import Controller.Packets.ServerPacketType;
 import Model.World;
@@ -16,30 +16,23 @@ import java.net.Socket;
 public final class AppGUI extends Application {
 
     private static Stage gameStage;
-    private static Socket client;
 
     public static Stage getGameStage() {
         return gameStage;
     }
 
-    public static World getGameServerWorld() {
-        return ClientController.Instance.getMainServerWorld();
-    }
+
 
     public static World getWorld() {
-        return ClientController.Instance.getWorld();
+        return Client.getInstance().getWorld();
     }
 
     public static String getClientName() {
-        return ClientController.Instance.getClientName();
-    }
-
-    public static Socket getClient() {
-        return client;
+        return Client.getInstance().getClientName();
     }
 
     public static void sendPacket(ServerPacketType serverPacketType, String... packetElements) {
-        ServerPacket serverPacket = new ServerPacket(ClientController.Instance.getClientName());
+        ServerPacket serverPacket = new ServerPacket(Client.getInstance().getClientName());
         serverPacket.setPacketType(serverPacketType);
         serverPacket.addElements(packetElements);
     }

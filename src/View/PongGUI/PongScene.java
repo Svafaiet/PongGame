@@ -1,6 +1,5 @@
 package View.PongGUI;
 
-import Controller.Packets.ServerPacket;
 import Controller.Packets.ServerPacketType;
 import Model.Game;
 import Model.GameMode;
@@ -196,13 +195,13 @@ public class PongScene extends BarScene {
                     getPongLogic().moveGoalKeeperDown(2);
                     break;
                 case "PAUSE_MULTI_PLAYER":
-                    AppGUI.sendPacket(ServerPacketType.PONG_ACTION, "PAUSE");
+                    AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "PAUSE");
                     break;
                 case "UP_GOALKEEPER_MULTI_PLAYER":
-                    AppGUI.sendPacket(ServerPacketType.PONG_ACTION, "UP");
+                    AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "UP");
                     break;
                 case "DOWN_GOALKEEPER_MULTI_PLAYER":
-                    AppGUI.sendPacket(ServerPacketType.PONG_ACTION, "DOWN");
+                    AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "DOWN");
                     break;
 
 

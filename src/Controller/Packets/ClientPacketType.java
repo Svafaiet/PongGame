@@ -1,7 +1,8 @@
 package Controller.Packets;
 
 public enum ClientPacketType {
-    USER_ALREADY_LOGGED_IN,
+    ERROR_MASSAGE,
+    SUCCESSFUL_LOGIN,
     PROFILES,
     WAITING_GAMES,
     GAME_STARTED,
