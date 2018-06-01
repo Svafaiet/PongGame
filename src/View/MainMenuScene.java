@@ -1,5 +1,7 @@
 package View;
 
+import Controller.Packets.ClientPacketType;
+import Controller.Packets.ServerPacketType;
 import Model.Profile;
 import View.utils.BarScene;
 import javafx.event.EventHandler;
@@ -9,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
+import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import java.util.ArrayList;
 
@@ -67,7 +70,14 @@ public class MainMenuScene extends BarScene {
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                AppGUI.getGameStage().setScene(new LoginScene());
+                try {
+                    AppGUI.sendPacket(ServerPacketType.LOG_OUT, AppGUI.getClientName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if(AppGUI.getHandShakingPacket().getPacketType() == ClientPacketType.SUCCESSFUL_LOGOUT) {
+                    AppGUI.getGameStage().setScene(new LoginScene());
+                }
             }
         });
     }

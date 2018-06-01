@@ -58,6 +58,11 @@ public class LoginScene extends BarScene {
             } else {
                 try {
                     AppGUI.sendPacket(ServerPacketType.LOG_IN, loginField.getText());
+                    if(AppGUI.getHandShakingPacket().getPacketType() == ClientPacketType.SUCCESSFUL_LOGIN) {
+                        AppGUI.setStageScene(new MainMenuScene());
+                    } else {
+                        // FIXME: 6/1/2018
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

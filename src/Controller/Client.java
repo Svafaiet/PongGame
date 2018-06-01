@@ -8,16 +8,12 @@ import Controller.utils.ConnectionManager;
 import Controller.utils.Logger;
 import Model.World;
 import View.AppGUI;
-import View.MainMenuScene;
-import View.RanksScene;
 import javafx.application.Application;
-import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Client implements ClientPackageListener {
     private static final Client Instance = new Client();
@@ -26,7 +22,7 @@ public class Client implements ClientPackageListener {
     private Socket socket;
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
-    private ClientPacket handShakingPackekt;
+    private ClientPacket handShakingPacket;
 
     private Client() {
         world = new World();
@@ -54,11 +50,11 @@ public class Client implements ClientPackageListener {
     }
 
     public void sendPacket(ServerPacket serverPacket) throws Exception {
-        if (socket == null) {
+        if(socket == null) {
             initSocket();
-            if (serverPacket.getPacketType() == ServerPacketType.SIGN_UP) {
-                clientName = (String) serverPacket.getArgument(0);
-            }
+        }
+        if (serverPacket.getPacketType() == ServerPacketType.SIGN_UP || serverPacket.getPacketType() == ServerPacketType.LOG_IN) {
+            clientName = (String) serverPacket.getArgument(0);
         }
         serverPacket.setFromMassage(clientName);
         objectOutputStream.writeObject(serverPacket);
@@ -70,13 +66,15 @@ public class Client implements ClientPackageListener {
         objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectInputStream = new ObjectInputStream(socket.getInputStream());
         new Thread(() -> {
-            try {
-                ClientPacket clientPacket = (ClientPacket) objectInputStream.readObject();
-                receive(clientPacket);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassCastException | ClassNotFoundException e) {
-                System.err.println("invalid packet");
+            while (true) {
+                try {
+                    ClientPacket clientPacket = (ClientPacket) objectInputStream.readObject();
+                    receive(clientPacket);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassCastException | ClassNotFoundException e) {
+                    System.err.println("invalid packet");
+                }
             }
         }).start();
     }
@@ -89,22 +87,24 @@ public class Client implements ClientPackageListener {
                 // TODO: 6/1/2018
                 break;
             case PROFILES:
-                handShakingPackekt = clientPacket;
                 break;
             case SUCCESSFUL_LOGIN:
                 clientName = (String) clientPacket.getArgument(0);
-                handShakingPackekt = clientPacket;
+                break;
+            case SUCCESSFUL_LOGOUT:
+                clientName = "guest";
                 break;
             case WAITING_GAMES:
 
         }
+        handShakingPacket = clientPacket;
     }
 
     public ClientPacket getHandShakingPacket() {
         while (true)
-            if (handShakingPackekt != null) {
-                ClientPacket ans = handShakingPackekt;
-                handShakingPackekt = null;
+            if (handShakingPacket != null) {
+                ClientPacket ans = handShakingPacket;
+                handShakingPacket = null;
                 return ans;
             } else {
                 try {

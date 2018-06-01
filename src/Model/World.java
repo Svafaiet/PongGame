@@ -34,11 +34,19 @@ public class World {
 
     //Accessing
     public boolean hasProfile(String playerName) {
-        return profiles.contains(playerName);
+        for(Profile profile : profiles) {
+            if (playerName.equals(profile.getName()))
+                return true;
+        }
+        return false;
     }
 
     public boolean hasGame(String gameName) {
-        return games.contains(gameName);
+        for(Game game : games) {
+            if (gameName.equals(game.getSaveName()))
+                return true;
+        }
+        return false;
     }
 
     public ArrayList<Profile> getProfiles() {

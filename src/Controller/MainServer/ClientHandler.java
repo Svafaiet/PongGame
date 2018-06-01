@@ -93,8 +93,10 @@ public class ClientHandler implements Runnable, ServerPackageListener {
         } else {
             switch (serverPacket.getPacketType()) {
                 case LOG_OUT:
+                    send(ClientPacketType.SUCCESSFUL_LOGOUT, profile.getName());
+                    profile.setOnline(false);
                     profile = null;
-                    hasLoggedIn = true;
+                    hasLoggedIn = false;
                     break;
                 case GET_RANKS:
                     send(ClientPacketType.PROFILES, server.getWorld().getProfiles().toArray());
