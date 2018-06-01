@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Client;
+import Controller.Packets.ClientPacket;
 import Controller.Packets.ServerPacket;
 import Controller.Packets.ServerPacketType;
 import Model.World;
@@ -22,7 +23,6 @@ public final class AppGUI extends Application {
     }
 
 
-
     public static World getWorld() {
         return Client.getInstance().getWorld();
     }
@@ -31,10 +31,15 @@ public final class AppGUI extends Application {
         return Client.getInstance().getClientName();
     }
 
-    public static void sendPacket(ServerPacketType serverPacketType, String... packetElements) {
+    public static void sendPacket(ServerPacketType serverPacketType, String... packetElements) throws Exception{
         ServerPacket serverPacket = new ServerPacket(Client.getInstance().getClientName());
         serverPacket.setPacketType(serverPacketType);
         serverPacket.addElements(packetElements);
+        Client.getInstance().sendPacket(serverPacket);
+    }
+
+    public static ClientPacket getHandShakingPacket() {
+        return Client.getInstance().getHandShakingPacket();
     }
 
     @Override

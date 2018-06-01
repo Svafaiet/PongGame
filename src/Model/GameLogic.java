@@ -24,4 +24,6 @@ public abstract class GameLogic implements Serializable {
     }
 
     public abstract boolean isGameFinished();
+
+    public abstract void handleCommands(int i, Object actionKey);
 }

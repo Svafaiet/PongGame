@@ -1,12 +1,17 @@
 package Controller.MainServer;
 
+import Controller.GameSession;
 import Controller.Packets.ClientPacket;
 import Controller.Packets.ClientPacketType;
 import Controller.Packets.ServerPacket;
 import Controller.Server;
+import Controller.utils.Logger;
 import Controller.utils.ServerPackageListener;
+import Model.Exceptions.DuplicateGameException;
 import Model.Exceptions.DuplicatePlayerNameException;
+import Model.Exceptions.GameNotFoundException;
 import Model.Exceptions.PlayerNotFoundException;
+import Model.GameType;
 import Model.Profile;
 
 import java.io.IOException;
@@ -21,6 +26,7 @@ public class ClientHandler implements Runnable, ServerPackageListener {
     private ObjectOutputStream objectOutputStream;
     private boolean hasLoggedIn = false;
     private Profile profile;
+    private GameSession currentGameSession;
 
     public void handleSocket(Server server, Socket socket) throws IOException {
         this.server = server;
@@ -49,22 +55,31 @@ public class ClientHandler implements Runnable, ServerPackageListener {
 
     @Override
     public void receive(ServerPacket serverPacket) {
+        Logger.log(serverPacket.toString());
         if (!hasLoggedIn) {
             switch (serverPacket.getPacketType()) {
                 case SIGN_UP:
                     try {
                         server.getWorld().addNewProfile(serverPacket.getFromMassage());
+                        profile = server.getWorld().getProfile(serverPacket.getFromMassage());
                         send(ClientPacketType.SUCCESSFUL_LOGIN, serverPacket.getFromMassage());
+                        profile.setOnline(true);
                         hasLoggedIn = true;
                     } catch (DuplicatePlayerNameException e) {
                         send(ClientPacketType.ERROR_MASSAGE, "Account name already exists");
+                    } catch (PlayerNotFoundException e) {
                     }
                     break;
                 case LOG_IN:
                     try {
                         profile = server.getWorld().getProfile(serverPacket.getFromMassage());
-                        send(ClientPacketType.SUCCESSFUL_LOGIN, serverPacket.getFromMassage());
-                        hasLoggedIn = true;
+                        if(profile.isOnline()) {
+                            send(ClientPacketType.ERROR_MASSAGE, "Account name has already logged in");
+                        } else {
+                            send(ClientPacketType.SUCCESSFUL_LOGIN, serverPacket.getFromMassage());
+                            profile.setOnline(true);
+                            hasLoggedIn = true;
+                        }
                     } catch (PlayerNotFoundException e) {
                         send(ClientPacketType.ERROR_MASSAGE, "Account name not found");
                     }
@@ -88,11 +103,29 @@ public class ClientHandler implements Runnable, ServerPackageListener {
                     // TODO: 6/1/2018 we must check for gameType:)
                     send(ClientPacketType.WAITING_GAMES, server.getWorld().getWaitingGames());
                     break;
+                case MAKE_GAME:
+                    try {
+                        currentGameSession = server.makeGameSession(serverPacket.getFromMassage(), (String) serverPacket.getArgument(1), (GameType) serverPacket.getArgument(0));
+                        currentGameSession.getPlayers().add(this);
+                    } catch (DuplicateGameException e) {
+                        send(ClientPacketType.ERROR_MASSAGE, "GameName already exists");
+                    } catch (PlayerNotFoundException e) {
+                    }
+                    break;
                 case JOIN:
+                    try {
+                        server.addToGameSession(this, (String) serverPacket.getArgument(0));
+                    } catch (PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (GameNotFoundException e) {
+                        send(ClientPacketType.ERROR_MASSAGE, "game not found");
+                    }
 
                     break;
                 case GAME_ACTION:
-
+                    if(currentGameSession != null) {
+                        currentGameSession.getGameProperties(serverPacket, this);
+                    }
                     break;
                 default:
                     System.err.println("Invalid serverPacket" + serverPacket);
@@ -111,5 +144,9 @@ public class ClientHandler implements Runnable, ServerPackageListener {
             // TODO: 6/1/2018 handling reconnecting
         }
 
+    }
+
+    public Profile getProfile() {
+        return profile;
     }
 }

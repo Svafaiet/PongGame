@@ -1,6 +1,8 @@
 package Controller.Packets;
 
-public enum ClientPacketType {
+import java.io.Serializable;
+
+public enum ClientPacketType implements Serializable {
     ERROR_MASSAGE,
     SUCCESSFUL_LOGIN,
     PROFILES,

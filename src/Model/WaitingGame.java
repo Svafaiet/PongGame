@@ -7,6 +7,7 @@ public class WaitingGame {
     private ArrayList<Profile> profiles = new ArrayList<>();
     private String saveName;
     private GameMode gameMode;
+    private Game game;
 
     public GameMaker getGameMaker() {
         return gameMaker;
@@ -37,6 +38,7 @@ public class WaitingGame {
     }
 
     public Game makeGame(){
-        return new Game(gameMaker, saveName, gameMode, profiles);
+        game = new Game(gameMaker, saveName, gameMode, profiles);
+        return game;
     }
 }

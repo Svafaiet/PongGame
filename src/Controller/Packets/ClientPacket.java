@@ -1,6 +1,9 @@
 package Controller.Packets;
 
-public class ClientPacket {
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ClientPacket implements Serializable {
     private ClientPacketType packetType;
     private Object[] arguments = new Object[0];
     private String serverName;
@@ -33,5 +36,14 @@ public class ClientPacket {
 
     public Object getArgument(int i) {
         return arguments[i];
+    }
+
+    @Override
+    public String toString() {
+        return "ClientPacket{" +
+                "packetType=" + packetType +
+                ", arguments=" + Arrays.toString(arguments) +
+                ", serverName='" + serverName + '\'' +
+                '}';
     }
 }

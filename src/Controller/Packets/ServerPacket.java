@@ -11,9 +11,10 @@ package Controller.Packets;
  * GET_PROFILES
  */
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class ServerPacket {
+public class ServerPacket implements Serializable {
     private ServerPacketType packetType;
     private Object[] arguments = new Object[0];
     private String fromMassage;
@@ -46,5 +47,18 @@ public class ServerPacket {
 
     public Object getArgument(int i) {
         return arguments[i];
+    }
+
+    public void setFromMassage(String fromMassage) {
+        this.fromMassage = fromMassage;
+    }
+
+    @Override
+    public String toString() {
+        return "ServerPacket{" +
+                "packetType=" + packetType +
+                ", arguments=" + Arrays.toString(arguments) +
+                ", fromMassage='" + fromMassage + '\'' +
+                '}';
     }
 }

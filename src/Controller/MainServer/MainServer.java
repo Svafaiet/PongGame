@@ -3,6 +3,7 @@ package Controller.MainServer;
 import Controller.Packets.ServerPacket;
 import Controller.Server;
 import Controller.utils.ConnectionManager;
+import Controller.utils.Logger;
 import Controller.utils.ServerPackageListener;
 import Model.Exceptions.DuplicateGameException;
 import Model.Exceptions.DuplicatePlayerNameException;
@@ -22,6 +23,7 @@ public class MainServer extends Server {
 
     private MainServer(int port) {
         super(port);
+        setName("MainServer");
     }
 
     public static MainServer getInstance() {
@@ -55,6 +57,7 @@ public class MainServer extends Server {
             while (true) {
                 try {
                     Socket socket = getServerSocket().accept();
+                    Logger.log("client connected");
                     ClientHandler clientHandler = new ClientHandler();
                     getClientHandlers().add(clientHandler);
                     clientHandler.handleSocket(this, socket);

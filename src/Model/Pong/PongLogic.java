@@ -118,6 +118,19 @@ public class PongLogic extends GameLogic {
         return false;
     }
 
+    @Override
+    public void handleCommands(int i, Object actionKey) {
+        if(actionKey.equals("PAUSE")) {
+            pauseOrResume();
+        }
+        if(actionKey.equals("UP")) {
+            moveGoalKeeperUp(i + 1);
+        }
+        if(actionKey.equals("DOWN")) {
+            moveGoalKeeperDown(i + 1);
+        }
+    }
+
     private Player whoIsWinner() {
         for (Player player : getPlayers()) {
             PongPlayer pongPlayer = (PongPlayer) player;

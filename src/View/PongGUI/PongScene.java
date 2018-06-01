@@ -104,13 +104,15 @@ public class PongScene extends BarScene {
         animationTimers.add(keyTimer);
         resumeAnimationTimers();
     }
-    private void stopAnimationTimers(){
-        for(AnimationTimer animationTimer : animationTimers) {
+
+    private void stopAnimationTimers() {
+        for (AnimationTimer animationTimer : animationTimers) {
             animationTimer.stop();
         }
     }
-    private void resumeAnimationTimers(){
-        for(AnimationTimer animationTimer : animationTimers) {
+
+    private void resumeAnimationTimers() {
+        for (AnimationTimer animationTimer : animationTimers) {
             animationTimer.start();
         }
     }
@@ -154,7 +156,7 @@ public class PongScene extends BarScene {
         });
 
         keyMeaning = new HashMap<>();
-        if(pongGame.getGameMode().equals(GameMode.SINGLE_PLAYER)) {
+        if (pongGame.getGameMode().equals(GameMode.SINGLE_PLAYER)) {
             keyMeaning.put(KeyCode.P, "PAUSE");
             keyMeaning.put(KeyCode.UP, "UP_GOALKEEPER2");
             keyMeaning.put(KeyCode.DOWN, "DOWN_GOALKEEPER2");
@@ -177,35 +179,36 @@ public class PongScene extends BarScene {
 
     private void sendCommand(KeyCode keyCode) {
         // FIXME: 5/29/2018 SINGLE_PLAYER_ONLY
-        if (keyMeaning.keySet().contains(keyCode)) {
-            switch (keyMeaning.get(keyCode)) {
-                case "PAUSE":
-                    getPongLogic().pauseOrResume();
-                    break;
-                case "UP_GOALKEEPER1":
-                    getPongLogic().moveGoalKeeperUp(1);
-                    break;
-                case "DOWN_GOALKEEPER1":
-                    getPongLogic().moveGoalKeeperDown(1);
-                    break;
-                case "UP_GOALKEEPER2":
-                    getPongLogic().moveGoalKeeperUp(2);
-                    break;
-                case "DOWN_GOALKEEPER2":
-                    getPongLogic().moveGoalKeeperDown(2);
-                    break;
-                case "PAUSE_MULTI_PLAYER":
-                    AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "PAUSE");
-                    break;
-                case "UP_GOALKEEPER_MULTI_PLAYER":
-                    AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "UP");
-                    break;
-                case "DOWN_GOALKEEPER_MULTI_PLAYER":
-                    AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "DOWN");
-                    break;
-
-
+        try {
+            if (keyMeaning.keySet().contains(keyCode)) {
+                switch (keyMeaning.get(keyCode)) {
+                    case "PAUSE":
+                        getPongLogic().pauseOrResume();
+                        break;
+                    case "UP_GOALKEEPER1":
+                        getPongLogic().moveGoalKeeperUp(1);
+                        break;
+                    case "DOWN_GOALKEEPER1":
+                        getPongLogic().moveGoalKeeperDown(1);
+                        break;
+                    case "UP_GOALKEEPER2":
+                        getPongLogic().moveGoalKeeperUp(2);
+                        break;
+                    case "DOWN_GOALKEEPER2":
+                        getPongLogic().moveGoalKeeperDown(2);
+                        break;
+                    case "PAUSE_MULTI_PLAYER":
+                        AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "PAUSE");
+                        break;
+                    case "UP_GOALKEEPER_MULTI_PLAYER":
+                        AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "UP");
+                        break;
+                    case "DOWN_GOALKEEPER_MULTI_PLAYER":
+                        AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "DOWN");
+                        break;
+                }
             }
+        } catch (Exception e) {
         }
     }
 
@@ -261,7 +264,7 @@ public class PongScene extends BarScene {
         score2.setText("" + ((PongPlayer) getPongLogic().getPlayers().get(1)).getScore());
         // FIXME: 5/29/2018 singlePlayer only
         long time = getPongLogic().getTime();
-        chronometer.setText(String.format("%d:%02d:%02d", (time/60000), ((time/1000)%60), (time/10)%100));
+        chronometer.setText(String.format("%d:%02d:%02d", (time / 60000), ((time / 1000) % 60), (time / 10) % 100));
     }
 
     private double castLogicalXToGraphical(double x) {

@@ -84,7 +84,7 @@ public class World {
         profiles.add(new Profile(playerName));
     }
 
-    public void makeNewGame(String player1Name, String saveName, GameMode gameMode, GameType gameType)
+    public WaitingGame makeNewGame(String player1Name, String saveName, GameMode gameMode, GameType gameType)
             throws PlayerNotFoundException , DuplicateGameException {
         if(hasGame(saveName)) {
             throw new DuplicateGameException();
@@ -97,9 +97,10 @@ public class World {
         } else {
             waitingGames.add(wg);
         }
+        return wg;
     }
 
-    public void addPlayerToGame(String playerName, String gameName) throws PlayerNotFoundException {
+    public void addPlayerToGame(String playerName, String gameName) throws PlayerNotFoundException, GameNotFoundException {
         for(WaitingGame waitingGame : waitingGames) {
             if(gameName.equals(waitingGame.getSaveName())) {
                 waitingGame.addProfile(getProfile(playerName));
@@ -110,6 +111,7 @@ public class World {
                 }
             }
         }
+        throw new GameNotFoundException(gameName + "game not found");
     }
 
     private void moveGame(String saveName, ArrayList<Game> src, ArrayList<Game> des) throws GameNotFoundException {
