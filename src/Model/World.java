@@ -67,7 +67,7 @@ public class World {
 
     public Profile getProfile(String playerName) throws PlayerNotFoundException {
         for(Profile profile : profiles) {
-            if (profile.equals(playerName)) {
+            if (profile.getName().equals(playerName)) {
                 return profile;
             }
         }
@@ -76,7 +76,7 @@ public class World {
 
     public Game getRunningGame(String saveName) throws GameNotFoundException {
         for (Game game : runningGames) {
-            if(game.equals(saveName)) {
+            if(game.getSaveName().equals(saveName)) {
                 return game;
             }
         }
@@ -94,6 +94,16 @@ public class World {
 
     public WaitingGame makeNewGame(String player1Name, String saveName, GameMode gameMode, GameType gameType)
             throws PlayerNotFoundException , DuplicateGameException {
+        if(gameMode == GameMode.SINGLE_PLAYER) {
+            profiles = new ArrayList<>();
+            waitingGames = new ArrayList<>();
+            runningGames = new ArrayList<>();
+            try {
+                addNewProfile(player1Name);
+            } catch (DuplicatePlayerNameException e) {
+                e.printStackTrace();
+            }
+        }
         if(hasGame(saveName)) {
             throw new DuplicateGameException();
         }
@@ -115,7 +125,7 @@ public class World {
                 if(waitingGame.isFull()) {
                     runningGames.add(waitingGame.makeGame());
                     waitingGames.remove(waitingGame);
-                    break;
+                    return;
                 }
             }
         }

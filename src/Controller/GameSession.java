@@ -40,6 +40,7 @@ public class GameSession {
 
 
     public void startGame() {
+        game = waitingGame.getGame();
         for (ClientHandler clientHandler : players) {
             clientHandler.send(ClientPacketType.GAME_STARTED, game);
             sendGameProperties(clientHandler);

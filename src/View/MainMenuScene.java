@@ -1,5 +1,6 @@
 package View;
 
+import Controller.Packets.ClientPacket;
 import Controller.Packets.ClientPacketType;
 import Controller.Packets.ServerPacketType;
 import Model.Profile;
@@ -14,6 +15,8 @@ import javafx.stage.Screen;
 import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class MainMenuScene extends BarScene {
     public static final double MAIN_MENU_WIDTH = Screen.getPrimary().getBounds().getWidth() / 2;
@@ -57,8 +60,14 @@ public class MainMenuScene extends BarScene {
     }
 
     public void showRanks() {
-        // FIXME: 5/25/2018
-        AppGUI.getGameStage().setScene(new RanksScene(AppGUI.getWorld().getProfiles()));
+        try {
+            AppGUI.sendPacket(ServerPacketType.GET_RANKS);
+            ClientPacket handShakePacket = AppGUI.getHandShakingPacket();
+            AppGUI.setStageScene(new RanksScene(new ArrayList<>((ArrayList<Profile>) handShakePacket.getArgument(0))));
+            // FIXME: 6/1/2018 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setBar(){

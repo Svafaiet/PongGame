@@ -85,7 +85,7 @@ public class ClientHandler implements Runnable, ServerPackageListener {
                     }
                     break;
                 case GET_RANKS:
-                    send(ClientPacketType.PROFILES, server.getWorld().getProfiles().toArray());
+                    send(ClientPacketType.PROFILES, server.getWorld().getProfiles());
                     break;
                 default:
                     break;
@@ -99,7 +99,7 @@ public class ClientHandler implements Runnable, ServerPackageListener {
                     hasLoggedIn = false;
                     break;
                 case GET_RANKS:
-                    send(ClientPacketType.PROFILES, server.getWorld().getProfiles().toArray());
+                    send(ClientPacketType.PROFILES, server.getWorld().getProfiles());
                     break;
                 case GET_AVAILABLE_GAMES:
                     // TODO: 6/1/2018 we must check for gameType:)
@@ -107,11 +107,11 @@ public class ClientHandler implements Runnable, ServerPackageListener {
                     break;
                 case MAKE_GAME:
                     try {
-                        currentGameSession = server.makeGameSession(serverPacket.getFromMassage(), (String) serverPacket.getArgument(1), (GameType) serverPacket.getArgument(0));
-                        currentGameSession.getPlayers().add(this);
+                        currentGameSession = server.makeGameSession(this, serverPacket);
                     } catch (DuplicateGameException e) {
                         send(ClientPacketType.ERROR_MASSAGE, "GameName already exists");
                     } catch (PlayerNotFoundException e) {
+                        e.printStackTrace();
                     }
                     break;
                 case JOIN:
@@ -141,7 +141,9 @@ public class ClientHandler implements Runnable, ServerPackageListener {
         clientPacket.setPacketType(packetType);
         clientPacket.addElements(args);
         try {
-            objectOutputStream.writeObject(clientPacket);
+            synchronized (objectOutputStream) {
+                objectOutputStream.writeObject(clientPacket);
+            }
         } catch (IOException e) {
             // TODO: 6/1/2018 handling reconnecting
         }

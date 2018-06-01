@@ -31,7 +31,7 @@ public final class AppGUI extends Application {
         return Client.getInstance().getClientName();
     }
 
-    public static void sendPacket(ServerPacketType serverPacketType, String... packetElements) throws Exception{
+    public static void sendPacket(ServerPacketType serverPacketType, Object... packetElements) throws Exception{
         ServerPacket serverPacket = new ServerPacket(Client.getInstance().getClientName());
         serverPacket.setPacketType(serverPacketType);
         serverPacket.addElements(packetElements);

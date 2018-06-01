@@ -38,6 +38,10 @@ public class ClientPacket implements Serializable {
         return arguments[i];
     }
 
+    public Object[] getArguments() {
+        return arguments;
+    }
+
     @Override
     public String toString() {
         return "ClientPacket{" +

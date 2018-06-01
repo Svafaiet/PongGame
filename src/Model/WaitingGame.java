@@ -1,8 +1,9 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class WaitingGame {
+public class WaitingGame implements Serializable {
     private GameMaker gameMaker;
     private ArrayList<Profile> profiles = new ArrayList<>();
     private String saveName;
@@ -15,6 +16,10 @@ public class WaitingGame {
 
     public ArrayList<Profile> getProfiles() {
         return profiles;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public String getSaveName() {
@@ -34,7 +39,7 @@ public class WaitingGame {
     }
 
     public boolean isFull() {
-        return gameMaker.getPlayerCout() <= profiles.size();
+        return gameMaker.getPlayerCount() <= profiles.size();
     }
 
     public Game makeGame(){

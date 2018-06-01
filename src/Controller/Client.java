@@ -1,13 +1,16 @@
 package Controller;
 
 import Controller.Packets.ClientPacket;
+import Controller.Packets.ClientPacketType;
 import Controller.Packets.ServerPacket;
 import Controller.Packets.ServerPacketType;
 import Controller.utils.ClientPackageListener;
 import Controller.utils.ConnectionManager;
 import Controller.utils.Logger;
+import Model.Game;
 import Model.World;
 import View.AppGUI;
+import View.PongGUI.PongScene;
 import javafx.application.Application;
 
 import java.io.IOException;
@@ -95,9 +98,16 @@ public class Client implements ClientPackageListener {
                 clientName = "guest";
                 break;
             case WAITING_GAMES:
-
+                break;
         }
-        handShakingPacket = clientPacket;
+        if(clientPacket.getPacketType() != ClientPacketType.GAME_PROPERTIES) {
+            handShakingPacket = clientPacket;
+        } else {
+            if(AppGUI.getGameStage().getScene() instanceof PongScene) {
+                // FIXME: 6/1/2018 other games
+                ((PongScene) AppGUI.getGameStage().getScene()).updateLogic((Game) clientPacket.getArgument(0));
+            }
+        }
     }
 
     public ClientPacket getHandShakingPacket() {

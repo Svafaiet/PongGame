@@ -35,7 +35,7 @@ public class PongScene extends BarScene {
     private static double xMultiplier = 1;
     private static double yMultiplier = 1;
 
-    private final Game pongGame;
+    private Game pongGame;
 
     //mainPart
     private Rectangle goalKeeper1 = new Rectangle();
@@ -50,7 +50,7 @@ public class PongScene extends BarScene {
     private Set<KeyCode> pressedKeys;
     private Map<KeyCode, String> keyMeaning;
 
-    ArrayList<AnimationTimer> animationTimers = new ArrayList<>();
+    private ArrayList<AnimationTimer> animationTimers = new ArrayList<>();
 
     public PongScene(Game game) {
         super(new Group(), PONG_WIDTH + 2 * BORDER_SIZE, PONG_HEIGHT + BAR_HEIGHT + 2 * BORDER_SIZE, Color.BLACK);
@@ -62,6 +62,10 @@ public class PongScene extends BarScene {
         setupKeyEvents();
         handleAnimationTimers();
         root.getChildren().addAll(ball, goalKeeper1, goalKeeper2);
+    }
+
+    public void updateLogic(Game game) {
+        this.pongGame = game;
     }
 
     private void handleAnimationTimers() {

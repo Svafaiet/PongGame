@@ -10,11 +10,12 @@ import Model.Pong.GoalKeeper.GoalKeeper;
 import Model.Pong.GoalKeeper.GoalKeeperType;
 import Model.Pong.GoalKeeper.Side;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PongLogic extends GameLogic {
+public class PongLogic extends GameLogic implements Serializable {
     public static final int WIN_SCORE = 5;
     public static final int DEFAULT_GAME_WIDTH = 640;
     public static final int DEFAULT_GAME_HEIGHT = 360;

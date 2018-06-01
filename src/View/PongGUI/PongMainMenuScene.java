@@ -1,12 +1,11 @@
 package View.PongGUI;
 
-import Model.Exceptions.DuplicateGameException;
-import Model.Exceptions.DuplicatePlayerNameException;
-import Model.Exceptions.PlayerNotFoundException;
+import Controller.Packets.ClientPacket;
+import Controller.Packets.ClientPacketType;
+import Controller.Packets.ServerPacketType;
 import Model.Game;
 import Model.GameMode;
 import Model.GameType;
-import Model.Pong.PongLogic;
 import Model.WaitingGame;
 import View.AppGUI;
 import View.ConstantColors;
@@ -28,6 +27,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.util.ArrayList;
 
 public class PongMainMenuScene extends BarScene {
     public static double getMainMenuWidth(){
@@ -139,6 +140,7 @@ public class PongMainMenuScene extends BarScene {
                 AppGUI.getWorld().addPlayerToGame(secondPlayerField.getText(), gameNameField.getText());
                 AppGUI.setStageScene(new PongScene(AppGUI.getWorld().getRunningGame(gameNameField.getText())));
             } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         secondElement.getChildren().addAll(gameNameField, secondPlayerField, start);
@@ -188,6 +190,68 @@ public class PongMainMenuScene extends BarScene {
 
         options.getChildren().add(1, howToMakeGameOptions);
 
+//        hostGameButton.setOnMouseClicked();
+        makeGameOnServerButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                showHowToMakeAGameInServer();
+            }
+        });
+    }
+
+    public void showHowToMakeAGameInServer() {
+        Rectangle container = new Rectangle();
+        dropShadow(container);
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setPrefWidth(getMainMenuWidth()*2/3);
+
+        HBox firstElement = new HBox(60);
+        firstElement.setAlignment(Pos.CENTER);
+        firstElement.setPadding(new Insets(0, 15, 0, 15));
+
+        HBox secondElement = new HBox(20);
+        secondElement.setAlignment(Pos.CENTER);
+        secondElement.setPadding(new Insets(10, 0, 20, 0));
+
+        Button close = new Button("X");
+        Region fillerRegion = new Region();
+        HBox.setHgrow(fillerRegion, Priority.ALWAYS);
+        close.setId("closeButton");
+        Label label = new Label("Make Game On Server");
+        label.setStyle("-fx-text-fill: #76c7d3");
+        firstElement.getChildren().addAll(label, fillerRegion, close);
+
+        TextField gameNameField = new PreWrittenTextField("Game Name");
+        Button make = new Button("Make!");
+        make.setStyle("-fx-min-height: 20");
+        make.setOnMouseClicked(event -> {
+            try {
+                AppGUI.sendPacket(ServerPacketType.MAKE_GAME, GameType.PONG, gameNameField.getText());
+                ClientPacket clientPacket = AppGUI.getHandShakingPacket();
+                if(clientPacket.getPacketType() == ClientPacketType.GAME_STARTED) {
+                    AppGUI.setStageScene(new PongScene((Game) clientPacket.getArgument(0)));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        secondElement.getChildren().addAll(gameNameField, make);
+
+        vBox.getChildren().addAll(firstElement, secondElement);
+
+        vBox.setId("floatingMenu");
+        AppGUI.getGameStage().show();
+        ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().addAll(container, vBox);
+        vBox.relocate((getMainMenuWidth() - vBox.getPrefWidth())/2,
+                (getMainMenuHeight() - vBox.getPrefHeight() - getMainMenuHeight()/5)/2);
+
+        close.setOnMouseClicked(event -> {
+            ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().remove(vBox);
+            ((Group) AppGUI.getGameStage().getScene().getRoot()).getChildren().remove(container);
+        });
+
+        container.setOnMouseClicked(close.getOnMouseClicked());
     }
 
     private void dropShadow(Rectangle container) {
@@ -198,6 +262,15 @@ public class PongMainMenuScene extends BarScene {
     }
 
     public void showSelectHowToConnect() {
+        try {
+            AppGUI.sendPacket(ServerPacketType.GET_AVAILABLE_GAMES);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ClientPacket clientPacket = AppGUI.getHandShakingPacket();
+        if(clientPacket.getPacketType() != ClientPacketType.WAITING_GAMES) {
+            return;
+        }
         boolean reset = false;
         Rectangle container = new Rectangle();
         dropShadow(container);
@@ -215,13 +288,23 @@ public class PongMainMenuScene extends BarScene {
         firstElement.getChildren().addAll(label, close);
 
         vBox.getChildren().add(firstElement);
-        for(WaitingGame waitingGame : AppGUI.getWorld().getWaitingGames()) {
+        for(WaitingGame waitingGame : (ArrayList<WaitingGame>)clientPacket.getArgument(0)) {
             Button newGame = new Button(waitingGame.getSaveName() +
-                    "(" + waitingGame.getProfiles().size() + "/" + waitingGame.getGameMaker().getPlayerCout()+ ")");
-            newGame.setOnMouseClicked(event -> {
-                // TODO: 5/24/2018
-            });
+                    "(" + waitingGame.getProfiles().size() + "/" + waitingGame.getGameMaker().getPlayerCount()+ ")");
             vBox.getChildren().add(newGame);
+            newGame.setOnMouseClicked(event -> {
+                try {
+                    AppGUI.sendPacket(ServerPacketType.JOIN, waitingGame.getSaveName());
+                    ClientPacket clientPacket2 = AppGUI.getHandShakingPacket();
+                    if(clientPacket2.getPacketType() == ClientPacketType.GAME_STARTED) {
+                        AppGUI.setStageScene(new PongScene((Game) clientPacket2.getArgument(0)));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            newGame.setStyle("-fx-min-height: 20;");
+            newGame.setPrefWidth(getMainMenuWidth()/3);
         }
         if(vBox.getChildren().size() == 1) {
             vBox.getChildren().addAll(new Label("no game found"));

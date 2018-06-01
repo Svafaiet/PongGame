@@ -34,7 +34,7 @@ public class ServerPacket implements Serializable {
         return packetType;
     }
 
-    public void addElements(String... newArguments) {
+    public void addElements(Object... newArguments) {
         Object[] newArgs = new Object[arguments.length + newArguments.length];
         System.arraycopy(arguments, 0, newArgs, 0, arguments.length);
         System.arraycopy(newArguments, 0, newArgs, arguments.length, newArguments.length);

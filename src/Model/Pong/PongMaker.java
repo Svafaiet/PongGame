@@ -5,9 +5,10 @@ import Model.GameMaker;
 import Model.Player;
 import Model.Profile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PongMaker extends GameMaker {
+public class PongMaker extends GameMaker implements Serializable {
 
 
 
@@ -29,7 +30,7 @@ public class PongMaker extends GameMaker {
     }
 
     @Override
-    public int getPlayerCout() {
+    public int getPlayerCount() {
         return 2;
     }
 }
