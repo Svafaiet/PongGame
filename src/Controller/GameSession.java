@@ -49,12 +49,15 @@ public class GameSession {
 
     private void sendGameProperties(ClientHandler clientHandler) {
         new Thread(() -> {
-            clientHandler.send(ClientPacketType.GAME_PROPERTIES, game);
-            try {
-                Thread.sleep(4);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            while (true) {
+                clientHandler.send(ClientPacketType.GAME_PROPERTIES, game);
+                try {
+                    Thread.sleep(40);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+
         }).start();
     }
 

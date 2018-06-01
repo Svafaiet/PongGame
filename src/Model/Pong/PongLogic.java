@@ -30,7 +30,7 @@ public class PongLogic extends GameLogic implements Serializable {
     private boolean isPaused = false;
     private long lastTimePaused = 0;
 
-    Timer timer = new Timer();
+    transient private Timer timer = new Timer();
 
     public PongLogic() {
         setGameType(GameType.PONG);
