@@ -1,16 +1,14 @@
 package Controller;
 
-import Controller.Packets.ClientPacket;
-import Controller.Packets.ClientPacketType;
-import Controller.Packets.ServerPacket;
-import Controller.Packets.ServerPacketType;
+import Controller.Packets.*;
 import Controller.utils.ClientPackageListener;
 import Controller.utils.ConnectionManager;
 import Controller.utils.Logger;
+import Model.Exceptions.DuplicateGameException;
+import Model.Exceptions.GameNotFoundException;
 import Model.Game;
 import Model.World;
 import View.AppGUI;
-import View.PongGUI.PongScene;
 import javafx.application.Application;
 
 import java.io.IOException;
@@ -52,7 +50,7 @@ public class Client implements ClientPackageListener {
         this.clientName = clientName;
     }
 
-    public void sendPacket(ServerPacket serverPacket) throws Exception {
+    public synchronized void sendPacket(ServerPacket serverPacket) throws Exception {
         if(socket == null) {
             initSocket();
         }
@@ -60,6 +58,7 @@ public class Client implements ClientPackageListener {
             clientName = (String) serverPacket.getArgument(0);
         }
         serverPacket.setFromMassage(clientName);
+        objectOutputStream.reset();
         objectOutputStream.writeObject(serverPacket);
     }
 
@@ -71,7 +70,7 @@ public class Client implements ClientPackageListener {
         new Thread(() -> {
             while (true) {
                 try {
-                    ClientPacket clientPacket = (ClientPacket) objectInputStream.readObject();
+                    ClientPacket clientPacket = (ClientPacket) objectInputStream.readUnshared();
                     receive(clientPacket);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -102,10 +101,19 @@ public class Client implements ClientPackageListener {
         }
         if(clientPacket.getPacketType() != ClientPacketType.GAME_PROPERTIES) {
             handShakingPacket = clientPacket;
+            if(clientPacket.getPacketType().equals(ClientPacketType.GAME_STARTED)) {
+                try {
+                    world.addGame((Game) clientPacket.getArgument(1));
+                } catch (DuplicateGameException e) {
+                    e.printStackTrace();
+                }
+            }
         } else {
-            if(AppGUI.getGameStage().getScene() instanceof PongScene) {
-                // FIXME: 6/1/2018 other games
-                ((PongScene) AppGUI.getGameStage().getScene()).updateLogic((Game) clientPacket.getArgument(0));
+            try {
+                Game game = getWorld().getRunningGame((String) clientPacket.getArgument(0));
+                game.getGameLogic().receiveGamePacket((GamePacket) clientPacket.getArgument(1));
+            } catch (GameNotFoundException|ClassCastException e) {
+                e.printStackTrace();
             }
         }
     }

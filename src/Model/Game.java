@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.Packets.GamePacket;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -19,7 +21,7 @@ public class Game implements Serializable {
         this.saveName = saveName;
     }
 
-    public String getSaveName() {
+    public synchronized String getSaveName() {
         return saveName;
     }
 

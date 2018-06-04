@@ -170,12 +170,12 @@ public class PongMainMenuScene extends BarScene {
         options.getChildren().clear();
         options.getChildren().addAll(makeGameButton, joinGameButton);
 
-        makeGameButton.setOnMouseClicked(event -> showSelectHowToMakeGame());
+        makeGameButton.setOnMouseClicked(event -> showSelectHowToLanGame());
 
         joinGameButton.setOnMouseClicked(event -> showSelectHowToConnect());
     }
 
-    public void showSelectHowToMakeGame() {
+    public void showSelectHowToLanGame() {
         makeOptionsLANMode();
         Button hostGameButton = new Button("Host Game");
         Button makeGameOnServerButton = new Button("Make On Server");
@@ -230,7 +230,7 @@ public class PongMainMenuScene extends BarScene {
                 AppGUI.sendPacket(ServerPacketType.MAKE_GAME, GameType.PONG, gameNameField.getText());
                 ClientPacket clientPacket = AppGUI.getHandShakingPacket();
                 if(clientPacket.getPacketType() == ClientPacketType.GAME_STARTED) {
-                    AppGUI.setStageScene(new PongScene((Game) clientPacket.getArgument(0)));
+                    AppGUI.setStageScene(new PongScene((Game) clientPacket.getArgument(1)));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -297,7 +297,7 @@ public class PongMainMenuScene extends BarScene {
                     AppGUI.sendPacket(ServerPacketType.JOIN, waitingGame.getSaveName());
                     ClientPacket clientPacket2 = AppGUI.getHandShakingPacket();
                     if(clientPacket2.getPacketType() == ClientPacketType.GAME_STARTED) {
-                        AppGUI.setStageScene(new PongScene((Game) clientPacket2.getArgument(0)));
+                        AppGUI.setStageScene(new PongScene((Game) clientPacket2.getArgument(1)));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

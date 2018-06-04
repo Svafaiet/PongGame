@@ -93,4 +93,8 @@ public class GoalKeeper implements Serializable {
             rectangle.setCenterY(rectangle.getCenterY() + MOVE_AMOUNT);
         }
     }
+
+    public void setRectangle(GoalKeeperRectangle rectangle) {
+        this.rectangle = rectangle;
+    }
 }

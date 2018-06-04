@@ -42,17 +42,17 @@ public class GameSession {
     public void startGame() {
         game = waitingGame.getGame();
         for (ClientHandler clientHandler : players) {
-            clientHandler.send(ClientPacketType.GAME_STARTED, game);
+            clientHandler.send(ClientPacketType.GAME_STARTED, game.getSaveName(), game);
             sendGameProperties(clientHandler);
         }
     }
 
     private void sendGameProperties(ClientHandler clientHandler) {
         new Thread(() -> {
-            while (true) {
-                clientHandler.send(ClientPacketType.GAME_PROPERTIES, game);
+            while (!game.getGameLogic().isGameFinished()) {
+                clientHandler.send(ClientPacketType.GAME_PROPERTIES, game.getSaveName(), game.getGameLogic().getGamePacket());
                 try {
-                    Thread.sleep(40);
+                    Thread.sleep(4000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -64,7 +64,7 @@ public class GameSession {
     public void getGameProperties(ServerPacket serverPacket, ClientHandler clientHandler) {
         if ((GameType) serverPacket.getArgument(0) == game.getGameLogic().getGameType()) {
             int i = players.indexOf(clientHandler);
-            game.getGameLogic().handleCommands(i, serverPacket.getArgument(2));
+            game.getGameLogic().handleCommands(i, serverPacket.getArgument(1));
         }
     }
 }

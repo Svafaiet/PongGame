@@ -1,8 +1,10 @@
 package View.PongGUI;
 
+import Controller.Packets.PongPacket;
 import Controller.Packets.ServerPacketType;
 import Model.Game;
 import Model.GameMode;
+import Model.GameType;
 import Model.Pong.Ball.Ball;
 import Model.Pong.GoalKeeper.GoalKeeper;
 import Model.Pong.PongLogic;
@@ -64,9 +66,6 @@ public class PongScene extends BarScene {
         root.getChildren().addAll(ball, goalKeeper1, goalKeeper2);
     }
 
-    public void updateLogic(Game game) {
-        this.pongGame = game;
-    }
 
     private void handleAnimationTimers() {
         AnimationTimer ballTimer = new AnimationTimer() {
@@ -90,6 +89,7 @@ public class PongScene extends BarScene {
 
                 if (getPongLogic().isGameFinished()) {
                     stopAnimationTimers();
+                    // FIXME: 6/2/2018
                     AppGUI.setStageScene(new PongMainMenuScene());
                     AppGUI.getGameStage().show();
                 }
@@ -202,13 +202,13 @@ public class PongScene extends BarScene {
                         getPongLogic().moveGoalKeeperDown(2);
                         break;
                     case "PAUSE_MULTI_PLAYER":
-                        AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "PAUSE");
+                        AppGUI.sendPacket(ServerPacketType.GAME_ACTION, GameType.PONG, "PAUSE");
                         break;
                     case "UP_GOALKEEPER_MULTI_PLAYER":
-                        AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "UP");
+                        AppGUI.sendPacket(ServerPacketType.GAME_ACTION, GameType.PONG,  "UP");
                         break;
                     case "DOWN_GOALKEEPER_MULTI_PLAYER":
-                        AppGUI.sendPacket(ServerPacketType.GAME_ACTION, "DOWN");
+                        AppGUI.sendPacket(ServerPacketType.GAME_ACTION, GameType.PONG, "DOWN");
                         break;
                 }
             }

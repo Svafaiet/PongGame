@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.Packets.GamePacket;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -26,4 +28,10 @@ public abstract class GameLogic implements Serializable {
     public abstract boolean isGameFinished();
 
     public abstract void handleCommands(int i, Object actionKey);
+
+    //make it synchronized
+    public abstract void receiveGamePacket(GamePacket gamePacket);
+
+    public abstract GamePacket getGamePacket();
+
 }

@@ -18,6 +18,7 @@ public class PongMaker extends GameMaker implements Serializable {
         for(Player player : players) {
             pongLogic.getPlayers().add(player);
         }
+        pongLogic.start();
         return pongLogic;
     }
 

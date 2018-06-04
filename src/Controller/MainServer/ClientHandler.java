@@ -40,6 +40,7 @@ public class ClientHandler implements Runnable, ServerPackageListener {
     public void run() {
         while (true) {
             try {
+//                objectInputStream.reset();
                 ServerPacket serverPacket = (ServerPacket) objectInputStream.readObject();
                 receive(serverPacket);
             } catch (ClassNotFoundException | ClassCastException e) {
@@ -73,7 +74,7 @@ public class ClientHandler implements Runnable, ServerPackageListener {
                 case LOG_IN:
                     try {
                         profile = server.getWorld().getProfile(serverPacket.getFromMassage());
-                        if(profile.isOnline()) {
+                        if (profile.isOnline()) {
                             send(ClientPacketType.ERROR_MASSAGE, "Account name has already logged in");
                         } else {
                             send(ClientPacketType.SUCCESSFUL_LOGIN, serverPacket.getFromMassage());
@@ -125,7 +126,7 @@ public class ClientHandler implements Runnable, ServerPackageListener {
 
                     break;
                 case GAME_ACTION:
-                    if(currentGameSession != null) {
+                    if (currentGameSession != null) {
                         currentGameSession.getGameProperties(serverPacket, this);
                     }
                     break;
@@ -136,14 +137,14 @@ public class ClientHandler implements Runnable, ServerPackageListener {
         }
     }
 
-    public void send(ClientPacketType packetType, Object... args) {
+    public synchronized void send(ClientPacketType packetType, Object... args) {
         ClientPacket clientPacket = new ClientPacket(server.getName());
         clientPacket.setPacketType(packetType);
         clientPacket.addElements(args);
         try {
-            synchronized (objectOutputStream) {
-                objectOutputStream.writeObject(clientPacket);
-            }
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(clientPacket);
+
         } catch (IOException e) {
             // TODO: 6/1/2018 handling reconnecting
         }

@@ -1,5 +1,7 @@
 package Model.Pong;
 
+import Controller.Packets.GamePacket;
+import Controller.Packets.PongPacket;
 import Model.GameLogic;
 import Model.GameType;
 import Model.Player;
@@ -36,7 +38,9 @@ public class PongLogic extends GameLogic implements Serializable {
         setGameType(GameType.PONG);
 
         setupGame();
+    }
 
+    public void start(){
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -129,6 +133,23 @@ public class PongLogic extends GameLogic implements Serializable {
         }
         if(actionKey.equals("DOWN")) {
             moveGoalKeeperDown(i + 1);
+        }
+    }
+
+    @Override
+    public synchronized GamePacket getGamePacket() {
+        return new PongPacket(this);
+    }
+
+    @Override
+    public void receiveGamePacket(GamePacket gamePacket) {
+        if (gamePacket instanceof PongPacket) {
+            goalKeeper1.setRectangle(((PongPacket) gamePacket).getGoalKeeper1Rectangle());
+            goalKeeper2.setRectangle(((PongPacket) gamePacket).getGoalKeeper2Rectangle());
+            ball.setBallCircle(((PongPacket) gamePacket).getBallCircle());
+            time = ((PongPacket) gamePacket).getTime();
+
+            setPlayers(gamePacket.getPlayers());
         }
     }
 

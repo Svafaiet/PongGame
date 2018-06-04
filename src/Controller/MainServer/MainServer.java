@@ -42,7 +42,7 @@ public class MainServer extends Server {
         try {
             setup();
         } catch (IOException e) {
-            System.err.println("Server already Running!");
+            Logger.log("Server already Running!");
         }
         try {
             listenToClients();
@@ -71,7 +71,7 @@ public class MainServer extends Server {
 
     private void setup() throws IOException {
         setServerSocket(new ServerSocket(getPort()));
-        System.err.println("ServerStarted");
+        Logger.log("ServerStarted");
     }
 
 

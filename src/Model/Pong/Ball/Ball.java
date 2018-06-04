@@ -123,5 +123,7 @@ public class Ball implements Serializable {
         return !Location.isInRange(ballCircle.getCenterX(), 0, boardProperties.getWidth());
     }
 
-
+    public void setBallCircle(BallCircle ballCircle) {
+        this.ballCircle = ballCircle;
+    }
 }

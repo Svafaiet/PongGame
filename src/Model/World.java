@@ -158,4 +158,12 @@ public class World {
     public void endGame(String saveName) throws GameNotFoundException {
         moveGame(saveName, runningGames, new ArrayList<>());
     }
+
+    public void addGame(Game game) throws DuplicateGameException {
+        if (hasGame(game.getSaveName())) {
+            throw new DuplicateGameException();
+        } else {
+            runningGames.add(game);
+        }
+    }
 }
