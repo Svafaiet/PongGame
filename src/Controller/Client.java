@@ -88,18 +88,29 @@ public class Client implements ClientPackageListener {
             case ERROR_MASSAGE:
                 // TODO: 6/1/2018
                 break;
-            case PROFILES:
-                break;
             case SUCCESSFUL_LOGIN:
                 clientName = (String) clientPacket.getArgument(0);
                 break;
             case SUCCESSFUL_LOGOUT:
                 clientName = "guest";
                 break;
-            case WAITING_GAMES:
-                break;
         }
-        if(clientPacket.getPacketType() != ClientPacketType.GAME_PROPERTIES) {
+        if (!clientPacket.getPacketType().isHandShaker()) {
+            switch (clientPacket.getPacketType()) {
+                case GAME_PROPERTIES:
+                    try {
+                        Game game = getWorld().getRunningGame((String) clientPacket.getArgument(0));
+                        game.getGameLogic().receiveGamePacket((GamePacket) clientPacket.getArgument(1));
+                    } catch (GameNotFoundException|ClassCastException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case GAME_FINISHED:
+                    // TODO: 6/4/2018
+                    break;
+            }
+
+        } else {
             handShakingPacket = clientPacket;
             if(clientPacket.getPacketType().equals(ClientPacketType.GAME_STARTED)) {
                 try {
@@ -107,13 +118,6 @@ public class Client implements ClientPackageListener {
                 } catch (DuplicateGameException e) {
                     e.printStackTrace();
                 }
-            }
-        } else {
-            try {
-                Game game = getWorld().getRunningGame((String) clientPacket.getArgument(0));
-                game.getGameLogic().receiveGamePacket((GamePacket) clientPacket.getArgument(1));
-            } catch (GameNotFoundException|ClassCastException e) {
-                e.printStackTrace();
             }
         }
     }

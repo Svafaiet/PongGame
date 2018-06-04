@@ -52,16 +52,18 @@ public class GameSession {
             while (!game.getGameLogic().isGameFinished()) {
                 clientHandler.send(ClientPacketType.GAME_PROPERTIES, game.getSaveName(), game.getGameLogic().getGamePacket());
                 try {
-                    Thread.sleep(4000);
+                    Thread.sleep(4);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
+            clientHandler.send(ClientPacketType.GAME_PROPERTIES, game.getSaveName(), game.getGameLogic().getGamePacket());
+            clientHandler.send(ClientPacketType.GAME_FINISHED, game.getSaveName());
+            clientHandler.endGameSession();
         }).start();
     }
 
-    public void getGameProperties(ServerPacket serverPacket, ClientHandler clientHandler) {
+    public void handleActions(ServerPacket serverPacket, ClientHandler clientHandler) {
         if ((GameType) serverPacket.getArgument(0) == game.getGameLogic().getGameType()) {
             int i = players.indexOf(clientHandler);
             game.getGameLogic().handleCommands(i, serverPacket.getArgument(1));

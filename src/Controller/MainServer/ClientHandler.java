@@ -11,7 +11,6 @@ import Model.Exceptions.DuplicateGameException;
 import Model.Exceptions.DuplicatePlayerNameException;
 import Model.Exceptions.GameNotFoundException;
 import Model.Exceptions.PlayerNotFoundException;
-import Model.GameType;
 import Model.Profile;
 
 import java.io.IOException;
@@ -117,7 +116,7 @@ public class ClientHandler implements Runnable, ServerPackageListener {
                     break;
                 case JOIN:
                     try {
-                        server.addToGameSession(this, (String) serverPacket.getArgument(0));
+                        currentGameSession = server.addToGameSession(this, (String) serverPacket.getArgument(0));
                     } catch (PlayerNotFoundException e) {
                         e.printStackTrace();
                     } catch (GameNotFoundException e) {
@@ -127,7 +126,7 @@ public class ClientHandler implements Runnable, ServerPackageListener {
                     break;
                 case GAME_ACTION:
                     if (currentGameSession != null) {
-                        currentGameSession.getGameProperties(serverPacket, this);
+                        currentGameSession.handleActions(serverPacket, this);
                     }
                     break;
                 default:
@@ -153,5 +152,9 @@ public class ClientHandler implements Runnable, ServerPackageListener {
 
     public Profile getProfile() {
         return profile;
+    }
+
+    public void endGameSession() {
+        currentGameSession = null;
     }
 }

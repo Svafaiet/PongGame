@@ -71,12 +71,13 @@ public class Server {
         return gameSessions;
     }
 
-    public void addToGameSession(ClientHandler clientHandler, String gameName) throws PlayerNotFoundException, GameNotFoundException {
+    public GameSession addToGameSession(ClientHandler clientHandler, String gameName) throws PlayerNotFoundException, GameNotFoundException {
         world.addPlayerToGame(clientHandler.getProfile().getName(), gameName);
         GameSession gameSession = saveGameSessionHashMap.get(gameName);
         gameSession.getPlayers().add(clientHandler);
         if (gameSession.getWaitingGame().isFull()) {
             gameSession.startGame();
         }
+        return gameSession;
     }
 }
